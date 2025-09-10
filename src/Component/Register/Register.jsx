@@ -1,6 +1,13 @@
-import React from "react";
+import { useContext } from "react";
+import AuthProvider from "../../AuthProvider/AuthProvider";
+import AuthContext from "../../AuthProvider/AuthContext";
+
+
+
 
 const Register = () => {
+    const {name} = useContext(AuthContext);
+    console.log(name);
   return (
     <div className="flex items-center justify-center min-h-[70vh] sm:min-h-[75vh] md:min-h-[80vh] bg-white px-4 sm:px-6 md:px-8">
       <div className="w-full max-w-md p-6 sm:p-8 space-y-6 bg-white rounded-lg shadow-lg">
