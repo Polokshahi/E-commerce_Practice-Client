@@ -12,7 +12,7 @@ const MainLayOut = () => {
       </header>
 
       {/* Main content */}
-      <main className="pt-[80px] pb-[100px] min-h-screen">
+      <main className="pt-[350px] md:pt-[200px] pb-[100px] min-h-screen">
         <Outlet />
       </main>
 

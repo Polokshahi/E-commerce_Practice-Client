@@ -30,28 +30,26 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const handleScroll = () => setHideTopBar(window.scrollY > 50);
+    const handleScroll = () => {
+      setHideTopBar(window.scrollY > 50);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header className="w-full border-b shadow-sm fixed top-0 left-0 z-50 bg-white">
-      {/* Top Bar */}
+      {/* Top bar */}
       <div
-        className={`bg-green-600 text-white text-xs sm:text-sm flex justify-between items-center px-4 py-2 transition-all duration-300 ${hideTopBar ? "hidden" : "flex"
-          }`}
+        className={`bg-green-600 text-white text-sm flex justify-between items-center px-4 py-2 transition-all duration-300 ${
+          hideTopBar ? "hidden" : "flex"
+        }`}
       >
-        {/* Left section */}
-        <div className="flex items-center gap-2">
-          <div className="hidden md:flex lg:flex">
-            <FaHeadphones />
-          </div>
-          <span className="hidden sm:inline">Have a question? CALL US +1-888-12497</span>
+        <div className="flex items-center gap-2 text-xs sm:text-sm">
+          <FaHeadphones />
+          <span>Have a question? CALL US +1-888-12497</span>
         </div>
-
-        {/* Right section */}
-        <div className="flex items-center gap-4 ml-auto sm:ml-0">
+        <div className="flex items-center gap-4 text-xs sm:text-sm">
           <Link className="flex items-center gap-1 hover:underline">
             <FaUser /> Track My Order
           </Link>
@@ -128,8 +126,9 @@ const Navbar = () => {
           </button>
         </div>
         <ul
-          className={`flex-col md:flex-row md:flex gap-4 md:gap-6 text-gray-800 font-medium ${isOpen ? "flex" : "hidden md:flex"
-            }`}
+          className={`flex-col md:flex-row md:flex gap-4 md:gap-6 text-gray-800 font-medium ${
+            isOpen ? "flex" : "hidden md:flex"
+          }`}
         >
           <NavLink className="cursor-pointer">All Categories</NavLink>
           <NavLink className="cursor-pointer">Home</NavLink>
@@ -145,9 +144,9 @@ const Navbar = () => {
       {/* Modal */}
       <dialog
         ref={modalRef}
-        className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+        className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       >
-        <div className="modal-box w-full max-w-xl max-h-[90vh] overflow-auto relative bg-white rounded-lg shadow-lg p-4">
+        <div className="modal-box max-w-xl w-full h-[550px] md:h-[550px] overflow-y-auto relative bg-white rounded-lg shadow-lg mx-4 md:mx-0">
           <button
             type="button"
             onClick={closeModal}
@@ -162,7 +161,7 @@ const Navbar = () => {
               <Tab className="cursor-pointer py-2 px-4">SignUp</Tab>
             </TabList>
 
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto">
               <TabPanel>
                 <Login />
               </TabPanel>
@@ -178,3 +177,129 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+import { Link } from "react-router";
+
+const Login = () => {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-white px-4 sm:px-6 md:px-8">
+      <div className="w-full max-w-md p-6 sm:p-8 space-y-6 bg-white rounded-lg shadow-lg">
+        {/* Heading */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-black text-center">
+          Login
+        </h2>
+
+        {/* Form */}
+        <form className="space-y-4">
+          {/* Email */}
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600"
+          />
+
+          {/* Password */}
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600"
+          />
+
+          {/* Remember Me & Forgot Password */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm">
+            <label className="flex items-center space-x-2 mb-2 sm:mb-0">
+              <input type="checkbox" className="form-checkbox text-green-600" />
+              <span className="text-gray-700">Remember Me</span>
+            </label>
+            <a href="#" className="text-blue-600 hover:underline">
+              Forgot Password?
+            </a>
+          </div>
+
+          {/* Login Button */}
+          <button
+            type="submit"
+            className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-md shadow transition-colors duration-200"
+          >
+            Login
+          </button>
+        </form>
+
+        {/* Sign Up Redirect */}
+        <div className="text-center text-sm text-gray-700">
+          Don't have an account?{" "}
+          <Link className="text-green-700 hover:underline">
+            Sign Up
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
+
+
+import React from "react";
+
+const Register = () => {
+  return (
+    <div className="flex items-center justify-center min-h-[80vh] bg-white px-4 sm:px-6 md:px-8">
+      <div className="w-full max-w-md p-6 sm:p-8 space-y-6 bg-white rounded-lg shadow-lg">
+        {/* Heading */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-black text-center">
+          Sign Up
+        </h2>
+
+        {/* Form */}
+        <form className="space-y-4">
+          {/* First Name */}
+          <input
+            type="text"
+            placeholder="First Name"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
+          />
+
+          {/* Last Name */}
+          <input
+            type="text"
+            placeholder="Last Name"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
+          />
+
+          {/* Email */}
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
+          />
+
+          {/* Date of Birth */}
+          <input
+            type="date"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
+          />
+
+          {/* Password */}
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
+          />
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-md shadow transition-colors duration-200"
+          >
+            Sign Up
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
