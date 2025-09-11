@@ -1,25 +1,38 @@
 
-import Card from '../Card/Card';
 import Banner from '../Banner/Banner';
 import Electronics from '../../Products/ElectronicsProduct/Electronics';
+import WomentCollecttion from '../../Products/WomenCollections/WomentCollecttion';
+import WinterFashion from '../../Products/WinterFashion/WinterFashion';
 
 const Home = () => {
     return (
         <div>
-
+            {/* for banner */}
             <section className='-mt-4'>
-            <Banner></Banner>
+                <Banner></Banner>
             </section>
 
+            {/* for electronics product */}
+            <section>
+                <Electronics></Electronics>
+            </section>
+
+            {/* women collection */}
+
+            <section className='max-w-7xl m-auto mt-20'>
+                <WomentCollecttion></WomentCollecttion>
+            </section>
+
+            {/* for winter collections  */}
 
             <section>
-
-                <Electronics></Electronics>
-
+                <WinterFashion></WinterFashion>
             </section>
 
 
-            
+
+
+
         </div>
     );
 };

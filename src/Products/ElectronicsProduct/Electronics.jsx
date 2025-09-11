@@ -1,13 +1,14 @@
-import axios from "axios";
+
 import { useState, useEffect } from "react";
 import ElectronicProductCart from "./ElectronicProductCart";
+import axiosInstantce from "../../Hook/useAxios";
 
 const Electronics = () => {
   const [electronicsProducts, setElectronicsProducts] = useState([]);
 
   useEffect(() => {
     // Fetch electronics products from server
-    axios.get('http://localhost:5000/electronics')
+    axiosInstantce.get('/electronics')
       .then((res) => {
         setElectronicsProducts(res.data);
       })
@@ -18,8 +19,9 @@ const Electronics = () => {
 
   return (
     <div className="max-w-7xl m-auto mt-2">
-      <div>
+      <div className="flex justify-between items-center">
         <h1 className="text-black font-extrabold text-2xl">Electronics</h1>
+        <input className="border-1 p-2 rounded" type="text" placeholder="search" />
       </div>
 
       {/* Electronics products from server */}
