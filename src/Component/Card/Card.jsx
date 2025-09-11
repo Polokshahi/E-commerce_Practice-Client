@@ -6,7 +6,7 @@ const Card = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-      {cards.map((num) => (
+      {cards?.map((num) => (
         <div
           key={num}
           className="card bg-base-100 shadow-xl hover:shadow-2xl transition duration-300"

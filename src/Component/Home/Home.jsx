@@ -3,6 +3,7 @@ import Banner from '../Banner/Banner';
 import Electronics from '../../Products/ElectronicsProduct/Electronics';
 import WomentCollecttion from '../../Products/WomenCollections/WomentCollecttion';
 import WinterFashion from '../../Products/WinterFashion/WinterFashion';
+import GadgetAndGare from '../../Products/Gadget&Gare/GadgetAndGare';
 
 const Home = () => {
     return (
@@ -27,6 +28,10 @@ const Home = () => {
 
             <section>
                 <WinterFashion></WinterFashion>
+            </section>
+
+            <section>
+                <GadgetAndGare></GadgetAndGare>
             </section>
 
 

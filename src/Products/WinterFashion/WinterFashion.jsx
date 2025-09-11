@@ -28,7 +28,7 @@ const WinterFashion = () => {
 
                 {
 
-                    winterProducts.map(winterProduct => <WinterFashionCart winterProduct={winterProduct} key={winterProduct._id}></WinterFashionCart>)
+                    winterProducts?.map(winterProduct => <WinterFashionCart winterProduct={winterProduct} key={winterProduct._id}></WinterFashionCart>)
 
                 }
 
