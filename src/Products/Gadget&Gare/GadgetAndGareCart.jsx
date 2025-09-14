@@ -1,3 +1,4 @@
+import { FaShoppingCart } from "react-icons/fa";
 import { Link } from "react-router";
 
 const GadgetAndGearCart = ({ gadgetProducts }) => {
@@ -99,15 +100,20 @@ const GadgetAndGearCart = ({ gadgetProducts }) => {
                     alt={product.title}
                     className="w-full h-full object-cover"
                     onError={(e) =>
-                      (e.currentTarget.src =
-                        "https://i.ibb.co.com/Z1XJtrbF/istockphoto-1396814518-612x612.jpg")
+                    (e.currentTarget.src =
+                      "https://i.ibb.co.com/Z1XJtrbF/istockphoto-1396814518-612x612.jpg")
                     }
                   />
+
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-sm">{product.title}</h3>
                   <p className="text-sm text-gray-500">{product.category}</p>
                   <p className="text-green-600 font-bold">${product.price}</p>
+                  <button className="flex items-center gap-1 text-sm font-medium text-white bg-green-600 px-3 py-1.5 rounded-full shadow hover:bg-green-700 transition">
+                    <FaShoppingCart className="text-xs" />
+                    <span>Add</span>
+                  </button>
                 </div>
               </Link>
             ))}

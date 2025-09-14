@@ -8,14 +8,13 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-import Login from "../Login/login";
+import Login from "../Login/Login";
 import Register from "../Register/Register";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [hideTopBar, setHideTopBar] = useState(false);
+  const [activeTab, setActiveTab] = useState("login"); // ✅ tab state
   const modalRef = useRef(null);
 
   const openModal = (e) => {
@@ -39,15 +38,18 @@ const Navbar = () => {
     <header className="w-full border-b shadow-sm fixed top-0 left-0 z-50 bg-white">
       {/* Top Bar */}
       <div
-        className={`bg-green-600 text-white text-xs sm:text-sm flex justify-between items-center px-4 py-2 transition-all duration-300 ${hideTopBar ? "hidden" : "flex"
-          }`}
+        className={`bg-green-600 text-white text-xs sm:text-sm flex justify-between items-center px-4 py-2 transition-all duration-300 ${
+          hideTopBar ? "hidden" : "flex"
+        }`}
       >
         {/* Left section */}
         <div className="flex items-center gap-2">
           <div className="hidden md:flex lg:flex">
             <FaHeadphones />
           </div>
-          <span className="hidden sm:inline">Have a question? CALL US +1-888-12497</span>
+          <span className="hidden sm:inline">
+            Have a question? CALL US +1-888-12497
+          </span>
         </div>
 
         {/* Right section */}
@@ -76,9 +78,7 @@ const Navbar = () => {
             <FaShoppingCart className="text-black" />
             <Link to={"/"}>ISSHUE</Link>
           </div>
-          <p className="text-xs text-gray-500">
-            Multi Store eCommerce Solution
-          </p>
+          <p className="text-xs text-gray-500">Multi Store eCommerce Solution</p>
         </div>
 
         {/* Search */}
@@ -128,8 +128,9 @@ const Navbar = () => {
           </button>
         </div>
         <ul
-          className={`flex-col md:flex-row md:flex gap-4 md:gap-6 text-gray-800 font-medium ${isOpen ? "flex" : "hidden md:flex"
-            }`}
+          className={`flex-col md:flex-row md:flex gap-4 md:gap-6 text-gray-800 font-medium ${
+            isOpen ? "flex" : "hidden md:flex"
+          }`}
         >
           <NavLink className="cursor-pointer">All Categories</NavLink>
           <NavLink className="cursor-pointer">Home</NavLink>
@@ -145,9 +146,10 @@ const Navbar = () => {
       {/* Modal */}
       <dialog
         ref={modalRef}
-        className="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+        className="modal fixed inset-0 z-50 flex items-center justify-center  p-4"
       >
-        <div className="modal-box w-full max-w-xl max-h-[90vh] overflow-auto relative bg-white rounded-lg shadow-lg p-4">
+        <div className="modal-box w-full max-w-md sm:max-w-lg md:max-w-xl max-h-[90vh] overflow-hidden relative bg-white rounded-lg shadow-lg p-4">
+          {/* Close Button */}
           <button
             type="button"
             onClick={closeModal}
@@ -156,21 +158,35 @@ const Navbar = () => {
             ✕
           </button>
 
-          <Tabs className="h-full flex flex-col">
-            <TabList className="flex justify-around border-b mb-4">
-              <Tab className="cursor-pointer py-2 px-4">Login</Tab>
-              <Tab className="cursor-pointer py-2 px-4">SignUp</Tab>
-            </TabList>
-
-            <div className="flex-1">
-              <TabPanel>
-                <Login />
-              </TabPanel>
-              <TabPanel>
-                <Register />
-              </TabPanel>
+          {/* ✅ Tabs with div instead of react-tabs */}
+          <div className="flex justify-around border-b mb-4">
+            <div
+              onClick={() => setActiveTab("login")}
+              className={`cursor-pointer py-2 px-4 ${
+                activeTab === "login"
+                  ? "border-b-2 border-green-600 font-semibold"
+                  : "text-gray-500"
+              }`}
+            >
+              Login
             </div>
-          </Tabs>
+            <div
+              onClick={() => setActiveTab("signup")}
+              className={`cursor-pointer py-2 px-4 ${
+                activeTab === "signup"
+                  ? "border-b-2 border-green-600 font-semibold"
+                  : "text-gray-500"
+              }`}
+            >
+              Sign Up
+            </div>
+          </div>
+
+          {/* Tab Panels */}
+          <div className="flex-1">
+            {activeTab === "login" && <Login />}
+            {activeTab === "signup" && <Register />}
+          </div>
         </div>
       </dialog>
     </header>
