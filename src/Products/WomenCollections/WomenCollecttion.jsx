@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
+import { FaShoppingCart } from "react-icons/fa";
 
-const WomentCollecttion = () => {
+const WomenCollecttion = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const WomentCollecttion = () => {
                 <img
                   src={featured.image}
                   alt={featured.title}
-                  className="w-full h-full object-cover rounded"
+                  className="w-full h-full object-contain rounded bg-white"
                 />
               </div>
               <div className="flex-1">
@@ -50,7 +51,7 @@ const WomentCollecttion = () => {
                 <p className="text-gray-700 mb-2">
                   {featured.description?.slice(0, 100)}...
                 </p>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 mb-2">
                   <span className="text-xl font-bold text-green-600">
                     ${featured.price}
                   </span>
@@ -60,6 +61,11 @@ const WomentCollecttion = () => {
                     </span>
                   )}
                 </div>
+                {/* Add Button */}
+                <button className="flex items-center gap-1 text-sm font-medium text-white bg-green-600 px-3 py-1.5 rounded-full shadow hover:bg-green-700 transition">
+                  <FaShoppingCart className="text-xs" />
+                  <span>Add</span>
+                </button>
               </div>
             </div>
           ) : (
@@ -76,17 +82,24 @@ const WomentCollecttion = () => {
           >
             {topRight ? (
               <div className="flex items-center gap-4 w-full">
-                <div className="h-full w-32 flex-shrink-0">
+                <div className="h-full w-32 flex-shrink-0 flex items-center justify-center">
                   <img
                     src={topRight.image}
                     alt={topRight.title}
-                    className="w-full h-full object-cover rounded"
+                    className="w-full h-full object-contain rounded bg-white"
                   />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold">{topRight.title}</h3>
                   <p className="text-sm text-gray-500">{topRight.category}</p>
-                  <p className="text-green-600 font-bold">${topRight.price}</p>
+                  <p className="text-green-600 font-bold mb-2">
+                    ${topRight.price}
+                  </p>
+                  {/* Add Button */}
+                  <button className="flex items-center gap-1 text-sm font-medium text-white bg-green-600 px-3 py-1.5 rounded-full shadow hover:bg-green-700 transition">
+                    <FaShoppingCart className="text-xs" />
+                    <span>Add</span>
+                  </button>
                 </div>
               </div>
             ) : (
@@ -98,24 +111,35 @@ const WomentCollecttion = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             {bottomRight?.map((product, index) => (
               <Link
-                key={product.id || index}
+                key={product._id || index}
                 to={`/product/${product._id}`}
                 className="bg-white flex-1 rounded shadow p-4 flex items-center gap-4 h-48 transform transition duration-300 hover:shadow-lg hover:scale-105"
               >
-                <div className="h-full w-32 flex-shrink-0">
+                <div className="h-full w-32 flex-shrink-0 flex items-center justify-center">
                   <img
-                    src={product.image || "https://i.ibb.co.com/Z1XJtrbF/istockphoto-1396814518-612x612.jpg"}
+                    src={
+                      product.image ||
+                      "https://i.ibb.co.com/Z1XJtrbF/istockphoto-1396814518-612x612.jpg"
+                    }
                     alt={product.title}
-                    onError={(e) =>{
-                        e.currentTarget.src = "https://i.ibb.co.com/Z1XJtrbF/istockphoto-1396814518-612x612.jpg";
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://i.ibb.co.com/Z1XJtrbF/istockphoto-1396814518-612x612.jpg";
                     }}
-                    className="w-full h-full object-cover rounded"
+                    className="w-full h-full object-contain rounded bg-white"
                   />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-sm">{product.title}</h3>
                   <p className="text-sm text-gray-500">{product.category}</p>
-                  <p className="text-green-600 font-bold">${product.price}</p>
+                  <p className="text-green-600 font-bold mb-2">
+                    ${product.price}
+                  </p>
+                  {/* Add Button */}
+                  <button className="flex items-center gap-1 text-sm font-medium text-white bg-green-600 px-3 py-1.5 rounded-full shadow hover:bg-green-700 transition">
+                    <FaShoppingCart className="text-xs" />
+                    <span>Add</span>
+                  </button>
                 </div>
               </Link>
             ))}
@@ -126,4 +150,4 @@ const WomentCollecttion = () => {
   );
 };
 
-export default WomentCollecttion;
+export default WomenCollecttion;

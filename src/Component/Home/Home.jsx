@@ -1,9 +1,9 @@
 
 import Banner from '../Banner/Banner';
 import Electronics from '../../Products/ElectronicsProduct/Electronics';
-import WomentCollecttion from '../../Products/WomenCollections/WomentCollecttion';
 import WinterFashion from '../../Products/WinterFashion/WinterFashion';
 import GadgetAndGare from '../../Products/Gadget&Gare/GadgetAndGare';
+import WomenCollecttion from '../../Products/WomenCollections/WomenCollecttion';
 
 const Home = () => {
     return (
@@ -21,7 +21,7 @@ const Home = () => {
             {/* women collection */}
 
             <section className='max-w-7xl m-auto mt-20'>
-                <WomentCollecttion></WomentCollecttion>
+                <WomenCollecttion></WomenCollecttion>
             </section>
 
             {/* for winter collections  */}
