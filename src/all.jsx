@@ -1,77 +1,26 @@
-import { Link } from "react-router";
+VITE_FIREBASE_API_KEY=AIzaSyDDTskOwYTSfCDi4D-tlmURucFBslB8x9w
+VITE_FIREBASE_AUTH_DOMAIN=ecommerce-web-d4558.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=ecommerce-web-d4558
+VITE_FIREBASE_STORAGE_BUCKET=ecommerce-web-d4558.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=841656300000
+VITE_FIREBASE_APP_ID=1:841656300000:web:316bca94b6e830c04afb85
 
-const ElectronicProductCart = ({ electronicProduct }) => {
-  const { productName, price, _id, image } = electronicProduct;
 
-  return (
-    <div className="border rounded-lg shadow hover:shadow-md transition p-4">
-      <Link to={`/product/${_id}`}>
-        <div>
-          <div className="flex justify-center">
-            <img
-              src={image || "https://i.ibb.co/Z1XJtrbF/istockphoto-1396814518-612x612.jpg"}
-              alt={productName || "Product"}
-              className="h-40 object-contain"
-              onError={(e) => {
-                e.currentTarget.src =
-                  "https://i.ibb.co/Z1XJtrbF/istockphoto-1396814518-612x612.jpg";
-              }}
-            />
-          </div>
-          <div className="text-center mt-4">
-            <p className="text-lg font-bold text-gray-800">
-              ${price?.toFixed(2)}{" "}
-              <span className="text-sm font-normal">/ Unit</span>
-            </p>
-            <p className="text-sm text-gray-500 mt-1">{productName}</p>
-          </div>
-        </div>
-      </Link>
-    </div>
-  );
+
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-export default ElectronicProductCart;
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-
-
-
-import { useState, useEffect } from "react";
-import ElectronicProductCart from "./ElectronicProductCart";
-import axiosInstantce from "../../Hook/useAxios";
-
-const Electronics = () => {
-  const [electronicsProducts, setElectronicsProducts] = useState([]);
-
-  useEffect(() => {
-    // Fetch electronics products from server
-    axiosInstantce.get('/electronics')
-      .then((res) => {
-        setElectronicsProducts(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching electronics:", err);
-      });
-  }, []); 
-
-  return (
-    <div className="max-w-7xl m-auto mt-2">
-      <div className="flex justify-between items-center">
-        <h1 className="text-black font-extrabold text-2xl">Electronics</h1>
-        <input className="border-1 p-2 rounded" type="text" placeholder="search" />
-      </div>
-
-      {/* Electronics products from server */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-4">
-        {electronicsProducts?.map((electronicProduct) => (
-          <ElectronicProductCart
-            key={electronicProduct._id} // always add a unique key
-            electronicProduct={electronicProduct}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default Electronics;
+export default auth;

@@ -14,6 +14,7 @@ const Register = () => {
           {/* First Name */}
           <input
             type="text"
+            name="name"
             placeholder="First Name"
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
           />
@@ -21,6 +22,7 @@ const Register = () => {
           {/* Last Name */}
           <input
             type="text"
+            name="name"
             placeholder="Last Name"
             className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600 text-black"
           />

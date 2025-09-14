@@ -143,6 +143,12 @@ const Navbar = () => {
         </ul>
       </nav>
 
+
+
+
+
+
+
       {/* Modal */}
       <dialog
         ref={modalRef}
@@ -189,6 +195,17 @@ const Navbar = () => {
           </div>
         </div>
       </dialog>
+
+
+
+
+
+
+
+
+
+
+      
     </header>
   );
 };

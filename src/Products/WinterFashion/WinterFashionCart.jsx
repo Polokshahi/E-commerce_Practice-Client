@@ -5,7 +5,7 @@ const WinterFashionCart = ({ winterProduct }) => {
     const { productName, price, _id, image } = winterProduct;
     return (
         <div className=" rounded-lg shadow hover:shadow-md transition p-4">
-            <Link to={`/product/${_id}`}>
+            <Link to={`/winterproduct/${_id}`}>
                 <div>
                     <div className="flex justify-center">
                         <img
