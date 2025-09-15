@@ -50,7 +50,7 @@ const Register = () => {
           first_name,
           last_name,
           date_of_birth,
-          Role: "User",
+          Role: "user",
         });
       })
       .then((res) => {

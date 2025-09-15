@@ -3,6 +3,10 @@ import MainLayOut from "../Layout/MainLayOut";
 import Home from "../Component/Home/Home";
 import ElectronicCardDetails from "../Products/ElectronicsProduct/ElectronicCardDetails";
 import WinterProductDetails from "../Products/WinterFashion/WinterProductDetails";
+import Login from "../Component/Login/Login";
+import Register from "../Component/Register/Register";
+
+
 
 
 
@@ -15,6 +19,16 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+
+      {
+        path: '/login',
+        element: <Login></Login>
+      },
+      {
+        path: '/register',
+        element: <Register></Register>
+      },
+
 
       {
 
@@ -32,10 +46,21 @@ const router = createBrowserRouter([
 
       },
 
+
+     
+
     
      
     ],
+
+
+
+
+
+
   },
+
+
 ]);
 
 export default router;
