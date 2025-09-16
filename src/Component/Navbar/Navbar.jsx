@@ -12,7 +12,7 @@ import AuthContext from "../../AuthProvider/AuthContext";
 import axios from "axios";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext); // Get logged-in user
+  const { user, logOut } = useContext(AuthContext); // Get logged-in user
   const [currentUser, setCurrentUser] = useState({});
   // console.log(user);
   const [isOpen, setIsOpen] = useState(false);
@@ -97,9 +97,7 @@ const Navbar = () => {
           {/* Show Sign In if not logged in */}
           {!user ? (
             <Link
-              onClick={() =>
-                document.getElementById("my_modal_3").showModal()
-              }
+              to="/login"
               className="flex items-center gap-1 hover:underline cursor-pointer"
             >
               <FaUser /> Sign In
@@ -118,7 +116,7 @@ const Navbar = () => {
                 className="dropdown-content menu p-2 shadow bg-white text-black rounded-box w-52 mt-2"
               >
                 <li>
-                  <Link to="/profile">User Profile</Link>
+                  <Link to="/Userprofile">User Profile</Link>
 
 
                 </li>
@@ -127,6 +125,11 @@ const Navbar = () => {
                     <Link to="/dashboard">Dashboard</Link>
                   </li>
                 )}
+
+
+               <li>
+                 <Link onClick={() => logOut()}>LogOut</Link>
+               </li>
 
 
 
