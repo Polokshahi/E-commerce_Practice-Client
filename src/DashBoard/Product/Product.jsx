@@ -1,13 +1,11 @@
 import React from 'react';
 
-const Stock = () => {
+const Product = () => {
     return (
         <div>
-
-             <h1>This is Stock Page</h1>
             
         </div>
     );
 };
 
-export default Stock;
+export default Product;

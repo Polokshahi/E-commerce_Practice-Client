@@ -29,7 +29,7 @@ const TotalProductDetails = () => {
 
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="p-6 bg-gray-50 min-h-screen -mt-8">
             <h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800">All Products</h1>
 
             <div className="overflow-x-auto bg-white shadow-lg rounded-xl border border-gray-200">

@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import {
   FaTachometerAlt,
   FaCashRegister,
@@ -8,6 +9,7 @@ import {
   FaShoppingCart,
   FaChevronDown,
   FaChevronUp,
+  
 } from "react-icons/fa";
 import { Link } from "react-router";
 import AuthContext from "../AuthProvider/AuthContext";
@@ -15,6 +17,7 @@ import AuthContext from "../AuthProvider/AuthContext";
 const SideBar = () => {
   const { user } = useContext(AuthContext);
   const [salesOpen, setSalesOpen] = useState(false);
+  const [productOpen, setProductOpen] = useState(false); // separate state
   const [customerOpen, setCustomerOpen] = useState(false);
 
   return (
@@ -55,9 +58,8 @@ const SideBar = () => {
           {salesOpen ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
         </button>
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            salesOpen ? "max-h-40" : "max-h-0"
-          }`}
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${salesOpen ? "max-h-40" : "max-h-0"
+            }`}
         >
           <div className="ml-8 flex flex-col space-y-1">
             <Link
@@ -75,13 +77,30 @@ const SideBar = () => {
           </div>
         </div>
 
-        {/* POS Sale (standalone) */}
-        <Link
-          to={"/possale"}
-          className="flex items-center gap-3 hover:bg-[#44c003] p-2 rounded"
+        {/* Product dropdown */}
+        <button
+          onClick={() => setProductOpen(!productOpen)}
+          className="flex items-center justify-between w-full hover:bg-[#44c003] p-2 rounded"
         >
-          POS Sale
-        </Link>
+          <span className="flex items-center gap-3">
+            <MdOutlineProductionQuantityLimits />
+            Product
+          </span>
+          {productOpen ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
+        </button>
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${productOpen ? "max-h-40" : "max-h-0"
+            }`}
+        >
+          <div className="ml-8 flex flex-col space-y-1">
+            <Link
+              to={"/addproduct"}
+              className="flex items-center gap-2 hover:text-green-500 p-2 rounded text-sm"
+            >
+              Add Product
+            </Link>
+          </div>
+        </div>
 
         {/* Customer dropdown */}
         <button
@@ -94,9 +113,8 @@ const SideBar = () => {
           {customerOpen ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
         </button>
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            customerOpen ? "max-h-40" : "max-h-0"
-          }`}
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${customerOpen ? "max-h-40" : "max-h-0"
+            }`}
         >
           <div className="ml-8 flex flex-col space-y-1">
             <Link
