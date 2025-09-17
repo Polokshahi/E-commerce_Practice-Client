@@ -10,10 +10,12 @@ import Dashboard from "../DashBoard/DashBoard";
 import DashboardLayout from "../DashBoard/DashBoardLayOut";
 import TotalCustomerDetails from "../DashBoard/DashBoardPage/TotalCustomar/TotalCustomerDetails";
 import TotalInvoiceDetails from "../DashBoard/DashBoardPage/TotalInvoice/TotalInvoiceDetails";
-import TotalProductDetails from "../DashBoard/DashBoardPage/TotalProduct/TotalProductDetails";
 import TotalSupplierDetails from "../DashBoard/DashBoardPage/TotalSupplier/TotalSupplierDetails";
 import Product from "../DashBoard/Product/Product";
 import AddProduct from "../DashBoard/Product/AddProduct";
+import ManageProduct from "../DashBoard/DashBoardPage/TotalProduct/ManageProduct";
+import ViewProduct from "../DashBoard/DashBoardPage/TotalProduct/ViewProduct";
+import EditedProduct from "../DashBoard/DashBoardPage/TotalProduct/EditedProduct";
 
 
 
@@ -109,8 +111,8 @@ const router = createBrowserRouter([
       },
 
       {
-        path: '/productDetails',
-        element: <TotalProductDetails></TotalProductDetails>,
+        path: '/manageProduct',
+        element: <ManageProduct></ManageProduct>,
         
       },
 
@@ -127,6 +129,16 @@ const router = createBrowserRouter([
         path: '/addproduct',
         element: <AddProduct></AddProduct>
 
+      },
+
+      {
+        path: '/view-product/:id',
+        element: <ViewProduct></ViewProduct>
+      },
+
+      {
+        path:'/editeProduct/:id',
+        element: <EditedProduct></EditedProduct>
       }
 
 

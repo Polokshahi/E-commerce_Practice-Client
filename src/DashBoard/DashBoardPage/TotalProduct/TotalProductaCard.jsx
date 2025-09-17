@@ -8,7 +8,7 @@ const TotalProductCard = () => {
 
   return (
     <Link
-      to="/productDetails"
+      to="/manageProduct"
       className="bg-white shadow rounded-xl p-6 border-l-4 border-teal-500 flex items-center justify-between hover:scale-105 transition-transform duration-200"
     >
       <div>
