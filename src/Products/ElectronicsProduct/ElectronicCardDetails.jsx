@@ -59,12 +59,12 @@ const ElectronicCardDetails = () => {
               euismod, nunc vel tincidunt facilisis.
             </p>
 
-            <p className="text-sm text-gray-700">
+            {/* <p className="text-sm text-gray-700">
               <span className="font-medium">Supplier Price:</span>{" "}
               <span className="text-gray-500">
                 ${singleData.supplierPrice || "N/A"}
               </span>
-            </p>
+            </p> */}
           </div>
 
           {/* Button */}

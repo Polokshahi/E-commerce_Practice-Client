@@ -1,233 +1,233 @@
-import { useParams, useNavigate } from "react-router";
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
+import { FaEdit, FaTrash, FaEye, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
-const EditedProduct = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-
-    const fileInputRef = useRef(null);
-
+const ManageProduct = () => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [uploading, setUploading] = useState(false);
-    const [fileSelected, setFileSelected] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(1);
+    const [sortOrder, setSortOrder] = useState(null); // 'asc' or 'desc'
+    const perPage = 10;
+    const navigate = useNavigate();
+    const [supplierSortOrder, setSupplierSortOrder] = useState(null); // 'asc' or 'desc'
 
-    const [formData, setFormData] = useState({
-        productName: "",
-        category: "",
-        price: "",
-        supplierPrice: "",
-        offerPrice: "",
-        description: "",
-        image: ""
-    });
+    const fetchProducts = async (page) => {
+        try {
+            const res = await axios.get(`http://localhost:5000/allProducts?page=${page}`);
+            setProducts(res.data.products || res.data);
+            setTotal(res.data.total || res.data.length);
+        } catch (err) {
+            console.error("Failed to fetch products:", err);
+        }
+    };
 
     useEffect(() => {
-        axios
-            .get("http://localhost:5000/allProducts1")
-            .then(res => {
-                setProducts(res.data || []);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("Failed to fetch products:", err);
-                setLoading(false);
-            });
-    }, [id]);
+        fetchProducts(page);
+    }, [page]);
 
-    const singleProduct = products.find(p => p._id === id);
+    const totalPages = Math.ceil(total / perPage);
 
-    useEffect(() => {
-        if (singleProduct) {
-            setFormData({
-                productName: singleProduct.productName || "",
-                category: singleProduct.category || "",
-                price: singleProduct.price || "",
-                supplierPrice: singleProduct.supplierPrice || "",
-                offerPrice: singleProduct.offerPrice || "",
-                description: singleProduct.description || "",
-                image: singleProduct.image || ""
-            });
-            if (singleProduct.image) setFileSelected(true);
-        }
-    }, [singleProduct]);
-
-    if (loading) return <span className="loading loading-dots loading-xl mx-auto block mt-20"></span>;
-    if (!singleProduct) return <p className="p-4 text-center text-red-500">Product not found</p>;
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+    const handleViewProductDetails = (productId) => {
+        navigate(`/view-product/${productId}`);
     };
 
-    const handleImageUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const form = new FormData();
-        form.append("file", file);
-        form.append("upload_preset", "Ecommerce");
-
-        setUploading(true);
-        setFileSelected(true);
-
-        try {
-            const res = await axios.post(
-                "https://api.cloudinary.com/v1_1/dhposuwdg/image/upload",
-                form
-            );
-            setFormData(prev => ({ ...prev, image: res.data.secure_url }));
-            setUploading(false);
-
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Image uploaded successfully",
-                showConfirmButton: false,
-                timer: 1500
-            });
-
-
-        } catch (err) {
-            console.error("Image upload failed:", err);
-            setUploading(false);
-            alert("Image upload failed");
+    // Price sort handler
+    // Price sort handler
+    const handleSortPrice = () => {
+        let sortedProducts = [...products];
+        if (sortOrder === "asc") {
+            // Next: High → Low
+            sortedProducts.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+            setSortOrder("desc");
+        } else {
+            // Default + Next: Low → High
+            sortedProducts.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+            setSortOrder("asc");
         }
+        setProducts(sortedProducts);
     };
 
-    const removeFile = () => {
-        setFormData(prev => ({ ...prev, image: "" }));
-        setFileSelected(false);
-        if (fileInputRef.current) fileInputRef.current.value = "";
+    // Supplier Price sort handler
+    const handleSupplierPriceSort = () => {
+        let sortedProducts = [...products];
+        if (supplierSortOrder === "asc") {
+            // Next: High → Low
+            sortedProducts.sort((a, b) => (b.supplierPrice ?? 0) - (a.supplierPrice ?? 0));
+            setSupplierSortOrder("desc");
+        } else {
+            // Default + Next: Low → High
+            sortedProducts.sort((a, b) => (a.supplierPrice ?? 0) - (b.supplierPrice ?? 0));
+            setSupplierSortOrder("asc");
+        }
+        setProducts(sortedProducts);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.put(`http://localhost:5000/updateProduct/${id}`, formData);
-            alert("Product updated successfully!");
-            navigate(-1);
-        } catch (err) {
-            console.error("Failed to update product:", err);
-            alert("Update failed!");
-        }
+
+    const handleDeleteProduct = (id) =>{
+
+        axios.delete(`http://localhost:5000/allProducts/${id}`)
+        .then(res =>{
+            console.log(res.data);
+            alert("Product deleted successfully");
+        }).catch(err => console.log(err.message)
+       
+    
+    
+    ); alert("Failed to delete product");
+
+
+        console.log(id);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // edit product
+    const handleEditProduct = (id) => {
+        navigate(`/editeProduct/${id}`);
+        console.log(id);
     };
 
     return (
-        <div className="p-4 sm:p-6 max-w-5xl mx-auto bg-white rounded-lg shadow-lg mt-6 sm:-mt-3">
-            <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center sm:text-left">Edit Product</h1>
+        <div className="p-2 sm:p-4 md:p-6 bg-gray-100 min-h-screen -mt-6">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">
+                Manage Product
+            </h2>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
-                {/* Product Name */}
-                <div>
-                    <label className="block text-gray-600 mb-1 font-medium">Product Name</label>
-                    <input
-                        type="text"
-                        name="productName"
-                        value={formData.productName}
-                        onChange={handleChange}
-                        className="input input-bordered w-full"
-                        required
-                    />
-                </div>
+            <div className="overflow-x-auto bg-white shadow-md rounded-xl">
+                <table className="w-full text-xs sm:text-sm text-left">
+                    <thead className="bg-gray-200 text-gray-700 uppercase text-[10px] sm:text-xs">
+                        <tr>
+                            <th className="px-2 sm:px-3 py-2">SL</th>
+                            <th className="px-2 sm:px-3 py-2">Product ID</th>
+                            <th className="px-2 sm:px-3 py-2">Product</th>
+                            <th className="px-2 sm:px-3 py-2">Supplier</th>
+                            <th className="px-2 sm:px-3 py-2">Category</th>
+                            <th
+                                className="px-2 sm:px-3 py-2 cursor-pointer flex items-center"
+                                onClick={handleSortPrice}
+                            >
+                                Sell Price
+                                {sortOrder === "asc" && <FaSortUp className="ml-1" />}
+                                {sortOrder === "desc" && <FaSortDown className="ml-1" />}
+                                {!sortOrder && <FaSort className="ml-1" />}
+                            </th>
 
-                {/* Category */}
-                <div>
-                    <label className="block text-gray-600 mb-1 font-medium">Category</label>
-                    <input
-                        type="text"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        className="input input-bordered w-full"
-                    />
-                </div>
+                            <th
+                                className="px-2 sm:px-3 py-2 cursor-pointer"
+                                onClick={handleSupplierPriceSort}
+                            >
+                                <div className="flex items-center space-x-1">
+                                    <span>Supplier Price</span>
+                                    <div className="flex flex-col leading-none">
+                                        <FaSortUp className="mt-1" />
+                                        <FaSortDown className="-mt-3" />
+                                    </div>
+                                </div>
+                            </th>
 
-                {/* Prices */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <div>
-                        <label className="block text-gray-600 mb-1 font-medium">Price</label>
-                        <input
-                            type="number"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleChange}
-                            className="input input-bordered w-full"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-gray-600 mb-1 font-medium">Supplier Price</label>
-                        <input
-                            type="number"
-                            name="supplierPrice"
-                            value={formData.supplierPrice}
-                            onChange={handleChange}
-                            className="input input-bordered w-full"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-gray-600 mb-1 font-medium">Offer Price</label>
-                        <input
-                            type="number"
-                            name="offerPrice"
-                            value={formData.offerPrice}
-                            onChange={handleChange}
-                            className="input input-bordered w-full"
-                        />
-                    </div>
-                </div>
+                            <th className="px-2 sm:px-3 py-2">Offer Price</th>
+                            <th className="px-2 sm:px-3 py-2">Images</th>
+                            <th className="px-2 sm:px-3 py-2 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-gray-700">
+                        {products.map((product, index) => (
+                            <tr
+                                key={product._id || index}
+                                className="border-t hover:bg-gray-50"
+                            >
+                                <td className="px-2 sm:px-3 py-2">
+                                    {(page - 1) * perPage + index + 1}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2">
+                                    {product.productId || "N/A"}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2 max-w-[120px] sm:max-w-[250px] truncate">
+                                    {product.title || product.productName}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2 text-center">
+                                    {product.supplierName || "N/A"}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2">
+                                    {product.category || "N/A"}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2 font-semibold text-green-700">
+                                    ${product.price?.toLocaleString()}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2 text-blue-600">
+                                    ${product.supplierPrice?.toLocaleString() || 0}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2 text-purple-600">
+                                    ${product.offerPrice?.toLocaleString() || "0"}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2">
+                                    <img
+                                        src={product.image}
+                                        onError={(e) =>
+                                        (e.currentTarget.src =
+                                            "https://i.ibb.co/Z1XJtrbF/istockphoto-1396814518-612x612.jpg")
+                                        }
+                                        alt="product"
+                                        className="w-8 h-8 sm:w-10 sm:h-10 object-cover rounded shadow"
+                                    />
+                                </td>
+                                <td className="px-2 sm:px-3 py-2 flex justify-center space-x-1 text-[10px] sm:text-xs">
+                                    <button
+                                        onClick={() => handleViewProductDetails(product._id)}
+                                        className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded flex items-center space-x-1"
+                                    >
+                                        <FaEye />
+                                    </button>
 
-                {/* Description */}
-                <div>
-                    <label className="block text-gray-600 mb-1 font-medium">Description</label>
-                    <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="textarea textarea-bordered w-full"
-                        rows={4}
-                    />
-                </div>
+                                    <button
+                                        onClick={() => handleEditProduct(product._id)}
+                                        className="bg-yellow-400 hover:bg-yellow-500 text-white px-2 py-1 rounded flex items-center space-x-1"
+                                    >
+                                        <FaEdit />
+                                    </button>
 
-                {/* Image Upload */}
-                <div className="form-control w-full -mt-3">
-                    <label className="label">
-                        <span className="label-text font-medium">Product Image</span>
-                    </label>
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="file-input file-input-bordered file-input-primary w-full"
-                    />
-                    {fileSelected && (
-                        <button
-                            type="button"
-                            onClick={removeFile}
-                            className="btn btn-sm btn-error mt-2"
-                        >
-                            Remove Image
-                        </button>
-                    )}
-                    {uploading && <span className="loading loading-spinner loading-xl"></span>
-                    }
-                </div>
+                                    <button onClick={() =>handleDeleteProduct(product._id)} className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded flex items-center space-x-1">
+                                        <FaTrash />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                    <button type="submit" className="btn btn-success w-full sm:w-auto">Save Changes</button>
-                    <button type="button" onClick={() => navigate(-1)} className="btn btn-error w-full sm:w-auto">Cancel</button>
-                </div>
-            </form>
+            {/* Pagination */}
+            <div className="flex flex-wrap justify-center mt-4 sm:mt-6 gap-2">
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i}
+                        className={`px-2 sm:px-3 py-1 rounded border text-xs sm:text-sm font-medium ${page === i + 1
+                                ? "bg-teal-600 text-white border-teal-600"
+                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"
+                            }`}
+                        onClick={() => setPage(i + 1)}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };
 
-export default EditedProduct;
+export default ManageProduct;
+
 
 
 
@@ -235,7 +235,7 @@ export default EditedProduct;
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -315,19 +315,67 @@ async function run() {
         // all product for sort filter and other action
 
         app.get('/allProducts1', async (req, res) => {
-            const allProduct = await electronicsProducts.aggregate([
-                { $addFields: { category: "Electronics" } },
-                { $unionWith: { coll: "WomenFashion", pipeline: [{ $addFields: { category: "WomenFashion" } }] } },
-                { $unionWith: { coll: "WinterFashion", pipeline: [{ $addFields: { category: "WinterFashion" } }] } },
-                { $unionWith: { coll: "Gadgate&Gear", pipeline: [{ $addFields: { category: "Gadgate&Gear" } }] } }
-            ]).toArray();
-            res.send(allProduct);
-        })
+            try {
+                const allProduct = await electronicsProducts.aggregate([
+                    // Electronics
+                    {
+                        $addFields: {
+                            category: { $ifNull: ["$category", "Electronics"] }
+                        }
+                    },
+                    // WomenFashion
+                    {
+                        $unionWith: {
+                            coll: "WomenFashion",
+                            pipeline: [
+                                {
+                                    $addFields: {
+                                        category: { $ifNull: ["$category", "WomenFashion"] }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    // WinterFashion
+                    {
+                        $unionWith: {
+                            coll: "WinterFashion",
+                            pipeline: [
+                                {
+                                    $addFields: {
+                                        category: { $ifNull: ["$category", "WinterFashion"] }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    // Gadgate&Gear
+                    {
+                        $unionWith: {
+                            coll: "Gadgate&Gear",
+                            pipeline: [
+                                {
+                                    $addFields: {
+                                        category: { $ifNull: ["$category", "Gadgate&Gear"] }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]).toArray();
+
+                res.send(allProduct);
+            } catch (err) {
+                console.error("Error fetching products:", err);
+                res.status(500).json({ message: "Error fetching products" });
+            }
+        });
 
 
 
 
-        
+
+
 
 
 
@@ -359,29 +407,157 @@ async function run() {
                 const perPage = 10;
                 const skip = (page - 1) * perPage;
 
+                // products with pagination
                 const products = await electronicsProducts.aggregate([
-                    { $addFields: { category: "Electronics" } },
-                    { $unionWith: { coll: "WomenFashion", pipeline: [{ $addFields: { category: "WomenFashion" } }] } },
-                    { $unionWith: { coll: "WinterFashion", pipeline: [{ $addFields: { category: "WinterFashion" } }] } },
-                    { $unionWith: { coll: "Gadgate&Gear", pipeline: [{ $addFields: { category: "Gadgate&Gear" } }] } }
+                    // Electronics
+                    { $addFields: { category: { $ifNull: ["$category", "Electronics"] } } },
+                    // WomenFashion
+                    {
+                        $unionWith: {
+                            coll: "WomenFashion",
+                            pipeline: [
+                                { $addFields: { category: { $ifNull: ["$category", "WomenFashion"] } } }
+                            ]
+                        }
+                    },
+                    // WinterFashion
+                    {
+                        $unionWith: {
+                            coll: "WinterFashion",
+                            pipeline: [
+                                { $addFields: { category: { $ifNull: ["$category", "WinterFashion"] } } }
+                            ]
+                        }
+                    },
+                    // Gadgate&Gear
+                    {
+                        $unionWith: {
+                            coll: "Gadgate&Gear",
+                            pipeline: [
+                                { $addFields: { category: { $ifNull: ["$category", "Gadgate&Gear"] } } }
+                            ]
+                        }
+                    }
                 ])
                     .skip(skip)
                     .limit(perPage)
                     .toArray();
 
+                // total count (without skip/limit)
                 const totalCount = await electronicsProducts.aggregate([
-                    { $addFields: { category: "Electronics" } },
-                    { $unionWith: { coll: "WomenFashion", pipeline: [{ $addFields: { category: "WomenFashion" } }] } },
-                    { $unionWith: { coll: "WinterFashion", pipeline: [{ $addFields: { category: "WinterFashion" } }] } },
-                    { $unionWith: { coll: "Gadgate&Gear", pipeline: [{ $addFields: { category: "Gadgate&Gear" } }] } }
+                    { $addFields: { category: { $ifNull: ["$category", "Electronics"] } } },
+                    {
+                        $unionWith: {
+                            coll: "WomenFashion",
+                            pipeline: [
+                                { $addFields: { category: { $ifNull: ["$category", "WomenFashion"] } } }
+                            ]
+                        }
+                    },
+                    {
+                        $unionWith: {
+                            coll: "WinterFashion",
+                            pipeline: [
+                                { $addFields: { category: { $ifNull: ["$category", "WinterFashion"] } } }
+                            ]
+                        }
+                    },
+                    {
+                        $unionWith: {
+                            coll: "Gadgate&Gear",
+                            pipeline: [
+                                { $addFields: { category: { $ifNull: ["$category", "Gadgate&Gear"] } } }
+                            ]
+                        }
+                    }
                 ]).toArray();
 
                 res.json({ products, total: totalCount.length });
             } catch (err) {
-                console.error(err);
+                console.error("Error fetching all products:", err);
                 res.status(500).json({ message: "Failed to fetch products" });
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Update product route
+        app.put("/updateProduct/:id", async (req, res) => {
+            const { id } = req.params;
+            const updatedData = req.body; // form data from client
+            console.log(updatedData);
+
+            // Collections to check
+            const collections = [
+                electronicsProducts,
+                womenFashion,
+                winterFashion,
+                gadgetAndGare
+            ];
+
+            try {
+                let updated = false;
+
+                for (let col of collections) {
+                    const filter = { _id: new ObjectId(id) };   // Find by _id
+                    const updateDoc = { $set: updatedData };    // Set all fields from form
+                    const options = { upsert: false };         // Only update, no insert
+
+                    const result = await col.updateOne(filter, updateDoc, options);
+
+                    console.log(
+                        `${result.matchedCount} document(s) matched, updated ${result.modifiedCount} document(s)`
+                    );
+
+                    if (result.matchedCount > 0) {
+                        updated = true;
+                        break; // Stop once updated
+                    }
+                }
+
+                if (!updated) {
+                    return res.status(404).json({ message: "Product not found" });
+                }
+
+                res.json({ message: "Product updated successfully" });
+            } catch (err) {
+                console.error("Update failed:", err);
+                res.status(500).json({ message: "Update failed", error: err.message });
+            }
+        });
+
+
+        // delete product
+        app.delete("/allProducts/:id", async (req, res) => {
+            try {
+                const { id } = req.params;
+                console.log("Deleting product with id:", id);
+
+                const query = { _id: new ObjectId(id) };
+                const result = await productsCollection.deleteOne(query);
+
+                if (result.deletedCount > 0) {
+                    res.json({ success: true, message: "Product deleted successfully" });
+                } else {
+                    res.json({ success: false, message: "No product found with this id" });
+                }
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ success: false, error: error.message });
+            }
+        });
+
 
 
 
@@ -416,3 +592,4 @@ async function run() {
 }
 
 run().catch(console.dir);
+

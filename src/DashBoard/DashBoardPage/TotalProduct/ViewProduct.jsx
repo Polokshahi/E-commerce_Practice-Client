@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router"; 
+import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -10,7 +10,7 @@ const ViewProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/allProducts1`) 
+      .get(`http://localhost:5000/allProducts1`)
       .then((res) => {
         setProducts(res.data || []);
         setLoading(false);
@@ -44,8 +44,8 @@ const ViewProduct = () => {
             alt={singleProduct.title || singleProduct.productName}
             className="w-full max-w-sm sm:max-w-md h-auto object-cover rounded-xl shadow-md transition-transform duration-500 hover:scale-105"
             onError={(e) =>
-              (e.currentTarget.src =
-                "https://i.ibb.co/Z1XJtrbF/istockphoto-1396814518-612x612.jpg")
+            (e.currentTarget.src =
+              "https://i.ibb.co/Z1XJtrbF/istockphoto-1396814518-612x612.jpg")
             }
           />
         </div>
@@ -56,10 +56,36 @@ const ViewProduct = () => {
           <p className="text-gray-500 text-sm sm:text-base"><strong>Category:</strong> {singleProduct.category || "N/A"}</p>
 
           <div className="flex items-center gap-3 sm:gap-4">
-            <span className="text-xl sm:text-2xl font-bold text-green-700">${singleProduct.price?.toLocaleString() || "0"}</span>
-            {singleProduct.offerPrice && (
-              <span className="text-sm sm:text-lg text-red-500 line-through">${singleProduct.offerPrice?.toLocaleString()}</span>
-            )}
+
+
+
+            {
+              singleProduct.offerPrice ? (
+                <>
+                  <span className="text-sm sm:text-lg text-green-700">
+                    ${singleProduct.offerPrice.toLocaleString()}
+                  </span>
+                  <span className="text-sm sm:text-lg text-red-700 line-through ml-2">
+                    ${singleProduct.price.toLocaleString()}
+                  </span>
+                </>
+              ) : (
+                <span className="text-sm sm:text-lg text-green-700">
+                  ${singleProduct.price.toLocaleString()}
+                </span>
+              )
+            }
+
+
+
+
+
+
+
+
+
+
+
           </div>
 
           <p className="text-gray-700 text-sm sm:text-base">{description}</p>
