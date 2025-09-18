@@ -1,126 +1,185 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useQuill } from "react-quilljs";
+import "quill/dist/quill.snow.css";
+
+const QuillEditor = ({ value, onChange }) => {
+  const { quill, quillRef } = useQuill({
+    theme: "snow",
+    modules: {
+      toolbar: [
+        ["bold", "italic", "underline"],
+        [{ font: [] }],
+        [{ size: [] }],
+        [{ color: [] }, { background: [] }],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ align: [] }],
+        ["link", "image", "video"],
+        ["blockquote", "code-block"],
+        ["clean"],
+      ],
+    },
+    formats: [
+      "bold", "italic", "underline",
+      "font", "size",
+      "color", "background",
+      "list", "bullet",
+      "align",
+      "link", "image", "video",
+      "blockquote", "code-block"
+    ],
+  });
+
+  // Set editor content if needed
+  useEffect(() => {
+    if (quill && value) {
+      quill.root.innerHTML = value;
+    }
+
+    if (quill) {
+      quill.on("text-change", () => {
+        onChange(quill.root.innerHTML);
+      });
+    }
+  }, [quill]);
+
+  return (
+    <div
+      ref={quillRef}
+      className="bg-white border border-gray-300 rounded overflow-y-auto"
+      style={{
+        width: "100%",
+        height: "300px",
+        whiteSpace: "pre-wrap",
+        wordWrap: "break-word",
+      }}
+    />
+  );
+};
 
 const AddProduct = () => {
+  const [activeTab, setActiveTab] = useState("item");
+  const [errors, setErrors] = useState({});
+  const [details, setDetails] = useState("");
+
+  const validate = () => {
+    const newErrors = {};
+    if (!document.getElementById("itemInfo").value) {
+      newErrors.itemInfo = "This field is required.";
+    }
+    if (!document.getElementById("category").value) {
+      newErrors.category = "This field is required.";
+    }
+    setErrors(newErrors);
+
+    console.log("Details content:", details);
+  };
+
   return (
     <div className="p-4 bg-gray-50 min-h-screen">
-      {/* Top Buttons */}
-      <div className="flex flex-wrap gap-2 mb-4">
-        <button className="bg-green-600 text-white px-4 py-2 rounded text-sm">+ Add Supplier</button>
-        <button className="bg-green-600 text-white px-4 py-2 rounded text-sm">+ Add Category</button>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm">+ Manage Product</button>
-        <button className="bg-green-700 text-white px-4 py-2 rounded text-sm">+ Import Product (CSV)</button>
-        <button className="bg-orange-500 text-white px-4 py-2 rounded text-sm">+ Product Ledger</button>
-      </div>
-
-      {/* Card */}
       <div className="bg-white shadow rounded-md p-6">
-        {/* Stepper */}
-        <div className="flex justify-between items-center border-b pb-4 mb-6 text-sm text-gray-600">
-          <div className="flex items-center space-x-2">
-            <span className="w-6 h-6 flex items-center justify-center bg-green-600 text-white rounded-full text-xs">1</span>
-            <span>Item Information</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="w-6 h-6 flex items-center justify-center bg-gray-200 text-gray-600 rounded-full text-xs">2</span>
-            <span>Web Store</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="w-6 h-6 flex items-center justify-center bg-gray-200 text-gray-600 rounded-full text-xs">3</span>
-            <span>Price</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="w-6 h-6 flex items-center justify-center bg-gray-200 text-gray-600 rounded-full text-xs">4</span>
-            <span>Image</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="w-6 h-6 flex items-center justify-center bg-gray-200 text-gray-600 rounded-full text-xs">5</span>
-            <span>Product Translation</span>
-          </div>
+        {/* Tabs */}
+        <div className="flex justify-between items-center mb-6">
+          {["item", "web", "price", "image", "translation"].map((tab, index) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className="flex items-center space-x-2 text-sm focus:outline-none"
+            >
+              <span
+                className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold ${
+                  activeTab === tab
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+                }`}
+              >
+                {index + 1}
+              </span>
+              <span
+                className={`${
+                  activeTab === tab
+                    ? "text-green-600 font-semibold"
+                    : "text-gray-700"
+                }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </span>
+            </button>
+          ))}
         </div>
 
-        {/* Form */}
-        <form className="grid grid-cols-2 gap-6">
-          {/* Left */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-700 text-sm mb-1">Item Information *</label>
-              <input
-                type="text"
-                placeholder="Item Information"
-                className="w-full border rounded px-3 py-2 text-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm mb-1">Filter Type</label>
-              <select className="w-full border rounded px-3 py-2 text-sm">
-                <option>Select option</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm mb-1">Warranty</label>
-              <input
-                type="text"
-                placeholder="Please enter number of months"
-                className="w-full border rounded px-3 py-2 text-sm"
-              />
-            </div>
-          </div>
-
-          {/* Right */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-700 text-sm mb-1">Category *</label>
-              <select className="w-full border rounded px-3 py-2 text-sm">
-                <option>Select option</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm mb-1">Filter Names</label>
-              <select className="w-full border rounded px-3 py-2 text-sm">
-                <option>Select option</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm mb-1">Bar Code</label>
-              <input
-                type="text"
-                placeholder="Please Enter Bar Code"
-                className="w-full border rounded px-3 py-2 text-sm"
-              />
-            </div>
-          </div>
-        </form>
-
-        {/* Details */}
-        <div className="mt-6">
-          <label className="block text-gray-700 text-sm mb-1">Details</label>
-          <textarea
-            rows="6"
-            className="w-full border rounded px-3 py-2 text-sm"
-            placeholder="Enter product details..."
-          />
-        </div>
-
-        {/* Invoice Details */}
-        <div className="mt-6">
-          <label className="block text-gray-700 text-sm mb-1">Invoice Details</label>
-          <textarea
-            rows="3"
-            className="w-full border rounded px-3 py-2 text-sm"
-            placeholder="Invoice Details"
-          />
-        </div>
-
-        {/* Pagination Buttons */}
-        <div className="flex justify-between mt-6">
+        {/* Item Tab */}
+        {activeTab === "item" && (
           <div>
-            <button className="px-4 py-2 border rounded text-sm">First</button>
-            <button className="px-4 py-2 border rounded text-sm ml-2">Previous</button>
+            <form className="grid grid-cols-2 gap-6">
+              {/* Left */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Item Information <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    id="itemInfo"
+                    type="text"
+                    placeholder="Item Information"
+                    className={`w-full border px-3 py-2 text-sm ${
+                      errors.itemInfo ? "border-red-600" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.itemInfo && (
+                    <p className="text-red-600 text-xs mt-1">
+                      {errors.itemInfo}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Filter Type
+                  </label>
+                  <select className="w-full border border-gray-300 px-3 py-2 text-sm">
+                    <option>Select option</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Right */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Category <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    id="category"
+                    className={`w-full border px-3 py-2 text-sm ${
+                      errors.category ? "border-red-600" : "border-gray-300"
+                    }`}
+                  >
+                    <option value="">Select option</option>
+                  </select>
+                  {errors.category && (
+                    <p className="text-red-600 text-xs mt-1">{errors.category}</p>
+                  )}
+                </div>
+              </div>
+            </form>
+
+            {/* Quill */}
+            <div className="mt-6">
+              <label className="block font-semibold text-gray-700 text-sm mb-1">
+                Details
+              </label>
+              <QuillEditor value={details} onChange={setDetails} />
+            </div>
           </div>
-          <div>
-            <button className="px-4 py-2 border rounded text-sm mr-2">Next</button>
-            <button className="px-4 py-2 border rounded text-sm">Last</button>
-          </div>
+        )}
+
+        <div className="mt-6">
+          <button
+            onClick={validate}
+            type="button"
+            className="bg-green-600 text-white px-4 py-2 rounded text-sm"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>

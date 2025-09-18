@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router';
 import router from './Router/router.jsx';
 import AuthProvider from './AuthProvider/AuthProvider.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import 'quill/dist/quill.snow.css'; // Snow theme
+
 
 const queryClient = new QueryClient();
 
