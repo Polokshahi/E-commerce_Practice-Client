@@ -44,7 +44,7 @@ const Register = () => {
         console.log("Firebase user created:", result.user);
 
         // Save user info to MongoDB via backend
-        return axios.post("http://localhost:5000/users", {
+        return axios.post("http://localhost:3000/users", {
           uid: result.user.uid,
           email,
           first_name,

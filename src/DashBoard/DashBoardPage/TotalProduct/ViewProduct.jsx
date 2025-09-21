@@ -10,7 +10,7 @@ const ViewProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/allProducts1`)
+      .get(`http://localhost:3000/allProducts1`)
       .then((res) => {
         setProducts(res.data || []);
         setLoading(false);

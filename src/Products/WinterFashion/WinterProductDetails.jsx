@@ -6,7 +6,7 @@ const WinterProductDetails = () => {
     const [winterProducts, setWinterProducts] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/winterFashion')
+        fetch('http://localhost:3000/winterFashion')
             .then(res => res.json())
             .then(data => setWinterProducts(data))
             .catch(err => console.error(err));

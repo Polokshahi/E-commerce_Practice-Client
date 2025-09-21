@@ -8,7 +8,7 @@ const WomenCollecttion = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/womenFashion")
+      .get("http://localhost:3000/womenFashion")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("API Error:", err));
   }, []);

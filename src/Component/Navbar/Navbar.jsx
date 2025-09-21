@@ -27,7 +27,7 @@ const Navbar = () => {
 
      useEffect(() =>{
 
-      axios.get(`http://localhost:5000/users/${user?.email}`)
+      axios.get(`http://localhost:3000/users/${user?.email}`)
       .then(res =>{
         setCurrentUser(res.data);
       }).catch(err => console.log(err))

@@ -80,7 +80,7 @@ const EditedProduct = () => {
   // Fetch all products
   useEffect(() => {
     axios
-      .get("http://localhost:5000/allProducts1")
+      .get("http://localhost:3000/allProducts1")
       .then((res) => {
         setProducts(res.data || []);
         setLoading(false);
@@ -162,7 +162,7 @@ const EditedProduct = () => {
     console.log("Submitting:", formData);
 
     axios
-      .put(`http://localhost:5000/updateProduct/${id}`, formData)
+      .put(`http://localhost:3000/updateProduct/${id}`, formData)
       .then((res) => {
         Swal.fire({
           icon: "success",

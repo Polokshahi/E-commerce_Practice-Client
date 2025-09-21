@@ -45,7 +45,7 @@ const router = createBrowserRouter([
 
         path: '/product/:id',
         element: <ElectronicCardDetails></ElectronicCardDetails>,
-        loader: ({ params }) => fetch(`http://localhost:5000/electronics/${params.id}`)
+        loader: ({ params }) => fetch(`http://localhost:3000/electronics/${params.id}`)
 
 
       },
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
       {
         path: '/winterproduct/:id',
         element: <WinterProductDetails></WinterProductDetails>,
-        loader: ({ params }) => fetch(`http://localhost:5000/winterFashion/${params.id}`)
+        loader: ({ params }) => fetch(`http://localhost:3000/winterFashion/${params.id}`)
 
       },
 

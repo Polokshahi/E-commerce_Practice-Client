@@ -6,7 +6,7 @@ const useAllProductLength = () => {
 
   const fetchLength = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/allProducts");
+      const res = await axios.get("http://localhost:3000/allProducts");
       setLength(res.data.total || res.data.length || 0);
     } catch (err) {
       console.error("Failed to fetch product length:", err);

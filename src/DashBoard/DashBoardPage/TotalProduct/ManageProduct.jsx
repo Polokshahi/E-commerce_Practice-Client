@@ -14,7 +14,7 @@ const ManageProduct = () => {
 
     const fetchProducts = async (page) => {
         try {
-            const res = await axios.get(`http://localhost:5000/allProducts?page=${page}`);
+            const res = await axios.get(`http://localhost:3000/allProducts?page=${page}`);
             setProducts(res.data.products || res.data);
             setTotal(res.data.total || res.data.length);
         } catch (err) {
@@ -68,12 +68,12 @@ const ManageProduct = () => {
         if (!window.confirm("Are you sure you want to delete this product?")) return;
 
         axios
-            .delete(`http://localhost:5000/allProducts/${id}`)
+            .delete(`http://localhost:3000/allProducts/${id}`)
             .then((res) => {
                 if (res.data.success) {
                     alert("Product deleted successfully ✅");
 
-                    // total কমাও
+                   
                     setTotal((prev) => prev - 1);
 
                     // আবার fresh data load করে পেজটাকে full করো

@@ -8,7 +8,7 @@ const ElectronicCardDetails = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/electronics")
+      .get("http://localhost:3000/electronics")
       .then((res) => setDetailDatas(res.data))
       .catch((err) => console.error(err));
   }, []);
