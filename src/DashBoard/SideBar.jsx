@@ -21,7 +21,7 @@ const SideBar = () => {
   const [customerOpen, setCustomerOpen] = useState(false);
 
   return (
-    <div className="bg-black text-white w-64 min-h-screen flex flex-col">
+    <div className="bg-black text-white w-40 md:w-54 lg:w-64  min-h-screen flex flex-col">
       {/* Logo */}
       <div className="p-4 border-b border-gray-800 flex items-center justify-center gap-2">
         <FaShoppingCart className="text-green-500 text-2xl" />

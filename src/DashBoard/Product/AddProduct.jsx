@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 
+
 // Quill Editor Component
 const QuillEditor = ({ value, onChange, height = "200px" }) => {
+
+
   const { quill, quillRef } = useQuill({
     theme: "snow",
     modules: {
@@ -116,6 +119,24 @@ const popularBrands = [
   "HyperX"
 ];
 
+const supplierName = [
+  "ABC Supplier",
+  "XYZ Supplier",
+  "123 Supplier",
+  "456 Supplier",
+  "789 Supplier",
+  "Supplier 1",
+  "Supplier 2",
+  "Supplier 3",
+  "Supplier 4",
+  "Supplier 5",
+  "Supplier 6",
+  "Supplier 7",
+  "Supplier 8",
+  "Supplier 9",
+  "Supplier 10"
+]
+
 
 
 
@@ -133,6 +154,7 @@ const AddProduct = () => {
   const tabs = ["item", "web", "price", "image", "translation"];
   const [activeTab, setActiveTab] = useState("item");
   const [errors, setErrors] = useState({});
+  const [showDiv, setShowDiv] = useState(false);
   const [formData, setFormData] = useState({ itemInfo: "", category: "" });
 
   // Quill editors
@@ -347,14 +369,14 @@ const AddProduct = () => {
                     Select Unit
                   </option>
                   {
-                    commonProductUnits.map((unit, idx) =>(
+                    commonProductUnits.map((unit, idx) => (
                       <option className="text-black" key={idx} value={unit}>
                         {unit}
                       </option>
                     ))
                   }
                   {/* <option value="kg">KG</option> */}
-                  
+
                 </select>
               </div>
 
@@ -371,14 +393,14 @@ const AddProduct = () => {
                     Select Brand
                   </option>
                   {
-                    popularBrands.map((brand, idx) =>(
+                    popularBrands.map((brand, idx) => (
                       <option className="text-black" key={idx} value={brand}>
                         {brand}
                       </option>
                     ))
                   }
-                  
-                  
+
+
                 </select>
               </div>
             </div>
@@ -461,6 +483,209 @@ const AddProduct = () => {
               </div>
             </div>
 
+          </div>
+
+        )}
+
+
+
+        {activeTab === "price" &&
+
+          <div className="flex justify-center items-center md:flex-col md:items-center md:justify-center lg:flex-col lg:justify-center lg:items-center lg:mr-[200px]">
+
+            {/* Sell Price */}
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Sell Price <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                placeholder="Sell Price"
+                className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted"
+              />
+            </div>
+
+
+
+
+
+
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Supplier Price <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                placeholder="0"
+                className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted"
+              />
+            </div>
+
+
+
+
+
+
+
+
+
+            <div className="mt-4 flex items-center mr-[230px]">
+  <label className="w-40 text-right text-sm font-semibold text-gray-700">
+    Offer <span className="text-red-500">*</span>
+  </label>
+  <select
+    defaultValue=""
+    className="ml-4 flex-1 w-[70px] border border-gray-400 rounded px-2 py-1 text-center focus:outline-none focus:border-dotted"
+  >
+    {/* Empty option selectable রাখা হলো */}
+    <option value="">--</option>
+    <option className="text-black" value="Yes">Yes</option>
+    <option className="text-black" value="No">No</option>
+  </select>
+</div>
+
+
+
+
+
+
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Item Code <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Item Code"
+                className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1  focus:outline-none focus:border-dotted"
+              />
+            </div>
+
+
+
+
+
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Supplier <span className="text-red-500">*</span>
+              </label>
+
+              <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1  focus:outline-none focus:border-dotted">
+                <option value="">--</option>
+                {
+                  supplierName.map((supplier, idx)=>(
+                    <option key={idx} value={supplier}>{supplier}</option>
+                  ))
+                }
+
+
+              </select>
+              
+            </div>
+
+
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Varient <span className="text-red-500">*</span>
+              </label>
+              <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted appearance-none">
+                <option value="">--</option>
+                <option value="small">Small</option>
+                <option value="Lerge">Lerge</option>
+                <option value="Medium">Medium</option>
+                <option value="Extra Lerge">Extra Lerge</option>
+
+
+              </select>
+            </div>
+
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Default Varient <span className="text-red-500">*</span>
+              </label>
+               <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted appearance-none">
+                <option value="">--</option>
+              </select>
+            </div>
+
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Color
+              </label>
+
+              <select
+                className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-left focus:outline-none appearance-none"
+                defaultValue=""
+              >
+                <option value="" disabled hidden></option>
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+              </select>
+            </div>
+
+
+
+            <div className="flex items-center mt-4">
+
+
+              <div className="w-40 text-right text-sm font-semibold text-gray-700">
+                {/* Checkbox */}
+                <fieldset className="flex items-center ml-4 gap-2">
+                  <input
+                    type="checkbox"
+                    className="checkbox h-4 w-4 text-blue-600"
+                    checked={showDiv}
+                    onChange={() => setShowDiv(!showDiv)}
+                  />
+                  <span className="text-gray-700 w-full truncate whitespace-nowrap overflow-hidden">
+                    Set Variant Wise Price
+                  </span></fieldset>
+
+                {/* Conditional div (always rendered, toggle visibility) */}
+                <div
+                  className={`ml-8 mt-3 p-4 border border-gray-300 rounded bg-gray-50 transition-all duration-300 w-[400px] ${showDiv ? "block opacity-100" : "opacity-0 h-0 overflow-hidden"
+                    }`}
+                >
+                  <p className="text-gray-800">
+                    {/* here content of div */}
+                  </p>
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+
+
+            <div className="flex items-center mt-4">
+              <label className="w-40 text-right text-sm font-semibold text-gray-700">
+                Video Link <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="url"
+                className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted"
+              />
+            </div>
 
 
 
@@ -475,9 +700,29 @@ const AddProduct = () => {
 
           </div>
 
-        )}
 
-        {activeTab === "price" && <p>Price Tab Content</p>}
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {activeTab === "image" && <p>Image Tab Content</p>}
         {activeTab === "translation" && <p>Translation Tab Content</p>}
 
