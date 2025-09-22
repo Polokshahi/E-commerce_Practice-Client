@@ -135,7 +135,7 @@ const SideBar = () => {
         {/* Stock */}
         <Link
           to={"/stock"}
-          className="flex items-center gap-3 hover:bg-[#44c003] p-2 rounded"
+          className="flex items-center gap-3 hoverkkkz:bg-[#44c003] p-2 rounded"
         >
           <FaBox /> Stock
         </Link>
