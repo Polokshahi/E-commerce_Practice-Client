@@ -6,7 +6,7 @@ import "quill/dist/quill.snow.css";
 const QuillEditor = ({ value, onChange, height = "200px" }) => {
   const { quill, quillRef } = useQuill({
     theme: "snow",
-      modules: {
+    modules: {
       toolbar: [
         ["bold", "italic", "underline"],
         [{ font: [] }],
@@ -39,7 +39,7 @@ const QuillEditor = ({ value, onChange, height = "200px" }) => {
     ],
   });
 
-     useEffect(() => {
+  useEffect(() => {
     if (!quill) return;
 
     // Set initial content only if it's different
@@ -72,9 +72,11 @@ const QuillEditor = ({ value, onChange, height = "200px" }) => {
   );
 };
 
-const commonProductUnits = ["Piece","Set","Pair","Dozen","Kilogram","Gram","Liter","Milliliter","Pack","Box","Bottle","Tube","Jar","Can","Bag","Sheet","Roll"];
-const popularBrands = ["Samsung","Apple","Sony","LG","Dell","HP","Lenovo","Asus","Microsoft","Nintendo","Nike","Adidas","Puma","Zara","H&M","Levi's","Under Armour","Uniqlo","Gucci","Louis Vuitton","Razer","Logitech","Corsair","MSI","Alienware","HyperX"];
-const supplierName = ["ABC Supplier","XYZ Supplier","123 Supplier","456 Supplier","789 Supplier","Supplier 1","Supplier 2","Supplier 3","Supplier 4","Supplier 5","Supplier 6","Supplier 7","Supplier 8","Supplier 9","Supplier 10"];
+const commonProductUnits = ["Piece", "Set", "Pair", "Dozen", "Kilogram", "Gram", "Liter", "Milliliter", "Pack", "Box", "Bottle", "Tube", "Jar", "Can", "Bag", "Sheet", "Roll"];
+const popularBrands = ["Samsung", "Apple", "Sony", "LG", "Dell", "HP", "Lenovo", "Asus", "Microsoft", "Nintendo", "Nike", "Adidas", "Puma", "Zara", "H&M", "Levi's", "Under Armour", "Uniqlo", "Gucci", "Louis Vuitton", "Razer", "Logitech", "Corsair", "MSI", "Alienware", "HyperX"];
+const supplierName = ["ABC Supplier", "XYZ Supplier", "123 Supplier", "456 Supplier", "789 Supplier", "Supplier 1", "Supplier 2", "Supplier 3", "Supplier 4", "Supplier 5", "Supplier 6", "Supplier 7", "Supplier 8", "Supplier 9", "Supplier 10"];
+const productCategories = ["Electronics", "Clothing", "Home & Kitchen", "Beauty & Personal Care", "Sports & Outdoors", "Books & Stationery", "Toys & Baby Products", "Health & Wellness", "Automotive", "Pet Supplies", "Jewelry & Accessories", "Footwear", "Groceries & Gourmet Food", "Office Supplies", "Garden & Outdoor", "Smart Home Devices", "Gaming & Consoles", "Travel & Luggage", "Music & Instruments", "Art & Craft Supplies", "Software & Subscriptions", "Industrial & Tools"];
+
 
 
 // Main Component
@@ -83,16 +85,16 @@ const AddProduct = () => {
   const [activeTab, setActiveTab] = useState("item");
   const [errors, setErrors] = useState({});
   const [showDiv, setShowDiv] = useState(false);
-  const [formData, setFormData] = useState({ itemInfo: "", category: "" });
-  const [details, setDetails] = useState("");
-  const [review, setReview] = useState("");
-  const [description, setDescription] = useState("");
-  const [specifications, setSpecifications] = useState("");
-  const [invoice, setInvoice] = useState({
-    invoiceNo: "",
-    invoiceDate: "",
-    totalAmount: "",
-  });
+  // const [formData, setFormData] = useState({ itemInfo: "", category: "" });
+  // const [details, setDetails] = useState("");
+  // const [review, setReview] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [specifications, setSpecifications] = useState("");
+  // const [invoice, setInvoice] = useState({
+  //   invoiceNo: "",
+  //   invoiceDate: "",
+  //   totalAmount: "",
+  // });
 
   const validate = () => {
     const newErrors = {};
@@ -160,6 +162,13 @@ const AddProduct = () => {
     }
   };
 
+
+
+
+
+
+
+
   const addImageInput = () => setImages((prev) => [...prev, null]);
   const removeImageInput = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
@@ -169,6 +178,116 @@ const AddProduct = () => {
       return updated;
     });
   };
+
+
+
+
+  const [blocks, setBlocks] = useState([
+    { id: Date.now(), language: "", details: "", description: "", specifications: "" },
+  ]);
+
+  const addBlock = () => {
+    setBlocks((prev) => [
+      ...prev,
+      { id: Date.now(), language: "", details: "", description: "", specifications: "" },
+    ]);
+  };
+
+  const removeBlock = (id) => {
+    setBlocks((prev) => prev.filter((b) => b.id !== id));
+  };
+
+  const handleChange = (id, field, value) => {
+    setBlocks((prev) =>
+      prev.map((b) => (b.id === id ? { ...b, [field]: value } : b))
+    );
+  };
+
+
+
+ const [variants, setVariants] = useState([]);
+  const [showVariants, setShowVariants] = useState(false);
+
+  const handleAdd = () => {
+    setVariants([...variants, { size: "", color: "", price: "" }]);
+  };
+
+  const handleRemove = (index) => {
+    const updated = [...variants];
+    updated.splice(index, 1);
+    setVariants(updated);
+  };
+
+  const handleChanges = (index, field, value) => {
+    const updated = [...variants];
+    updated[index][field] = value;
+    setVariants(updated);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    console.log("Submitted");
+  }
+
+
+
+  const [formData, setFormData] = useState({
+    itemInfo: "",
+    category: "",
+    filterType: "",
+    warrantee: "",
+    filterNames: "",
+    barCode: "",
+    invoiceDetails: "",
+    details: "",
+    unit: "",
+    brand: "",
+    type: "",
+    tag: "",
+    bestSale: "",
+    review: "",
+    description: "",
+    specifications: ""
+  });
+
+
+
+  console.log(formData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -182,9 +301,8 @@ const AddProduct = () => {
               className="flex items-center space-x-2 text-sm focus:outline-none"
             >
               <span
-                className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold ${
-                  activeTab === tab ? "bg-green-600 text-white" : "bg-gray-200 text-gray-600"
-                }`}
+                className={`flex items-center justify-center w-10 h-10 rounded-full font-semibold ${activeTab === tab ? "bg-green-600 text-white" : "bg-gray-200 text-gray-600"
+                  }`}
               >
                 {index + 1}
               </span>
@@ -196,10 +314,12 @@ const AddProduct = () => {
         </div>
 
         {/* ITEM TAB */}
+        {/* ITEM TAB */}
         {activeTab === "item" && (
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
+                {/* Item Information */}
                 <div>
                   <label className="block font-semibold text-gray-700 text-sm mb-1">
                     Item Information <span className="text-red-600">*</span>
@@ -208,69 +328,134 @@ const AddProduct = () => {
                     type="text"
                     placeholder="Item Information"
                     value={formData.itemInfo}
-                    onChange={(e) => setFormData({ ...formData, itemInfo: e.target.value })}
-                    className={`w-full border px-3 py-2 text-sm ${
-                      errors.itemInfo ? "border-red-600" : "border-gray-300"
-                    }`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, itemInfo: e.target.value })
+                    }
+                    className={`w-full border px-3 py-2 text-sm ${errors.itemInfo ? "border-red-600" : "border-gray-300"
+                      }`}
                   />
-                  {errors.itemInfo && <p className="text-red-600 text-xs mt-1">{errors.itemInfo}</p>}
+                  {errors.itemInfo && (
+                    <p className="text-red-600 text-xs mt-1">{errors.itemInfo}</p>
+                  )}
                 </div>
+
+                {/* Filter Type */}
                 <div>
-                  <label className="block font-semibold text-gray-700 text-sm mb-1">Filter Type</label>
-                  <select className="w-full border border-gray-300 px-3 py-2 text-sm">
-                    <option>Select option</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-semibold text-gray-700 text-sm mb-1">Warrantee</label>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Filter Type
+                  </label>
                   <input
                     type="text"
-                    placeholder="Please enter number of months"
+                    placeholder="Filter Type"
+                    value={formData.filterType || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, filterType: e.target.value })
+                    }
+                    className="w-full border px-3 py-2 text-sm border-gray-300"
+                  />
+                </div>
+
+                {/* Warrantee */}
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Warrantee (Months)
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Enter number of months"
+                    value={formData.warrantee || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, warrantee: e.target.value })
+                    }
                     className="w-full border border-gray-300 px-3 py-2 text-sm"
                   />
                 </div>
               </div>
+
               <div className="space-y-4">
+                {/* Category */}
                 <div>
                   <label className="block font-semibold text-gray-700 text-sm mb-1">
                     Category <span className="text-red-600">*</span>
                   </label>
                   <select
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className={`w-full border px-3 py-2 text-sm ${
-                      errors.category ? "border-red-600" : "border-gray-300"
-                    }`}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
+                    className={`w-full border px-3 py-2 text-sm ${errors.category ? "border-red-600" : "border-gray-300"
+                      }`}
                   >
-                    <option value="">Select option</option>
+                    <option disabled value="">
+                      --
+                    </option>
+                    {productCategories.map((cat, idx) => (
+                      <option className="text-black" key={idx} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
                   </select>
-                  {errors.category && <p className="text-red-600 text-xs mt-1">{errors.category}</p>}
+                  {errors.category && (
+                    <p className="text-red-600 text-xs mt-1">{errors.category}</p>
+                  )}
                 </div>
+
+                {/* Filter Names */}
                 <div>
-                  <label className="block font-semibold text-gray-700 text-sm mb-1">Filter Names</label>
-                  <select className="w-full border border-gray-300 px-3 py-2 text-sm">
-                    <option>Select option</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-semibold text-gray-700 text-sm mb-1">Bar Code</label>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Filter Names
+                  </label>
                   <input
                     type="text"
-                    placeholder="Please Enter Bar Code"
-                    className="w-full border border-gray-300 px-3 py-2 text-sm"
+                    placeholder="Filter Names"
+                    value={formData.filterNames || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, filterNames: e.target.value })
+                    }
+                    className="w-full border px-3 py-2 text-sm border-gray-300"
+                  />
+                </div>
+
+                {/* Bar Code */}
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">
+                    Bar Code
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Bar Code"
+                    value={formData.barCode || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, barCode: e.target.value })
+                    }
+                    className="w-full border px-3 py-2 text-sm border-gray-300"
                   />
                 </div>
               </div>
             </div>
+
+            {/* Details */}
             <div>
-              <label className="block font-semibold text-gray-700 text-sm mb-1">Details</label>
-              <QuillEditor value={details} onChange={setDetails} height="200px" />
+              <label className="block font-semibold text-gray-700 text-sm mb-1">
+                Details
+              </label>
+              <QuillEditor
+                value={formData.details}
+                onChange={(value) => setFormData({ ...formData, details: value })} height="200px" />
             </div>
+
+            {/* Invoice Details */}
             <div className="grid grid-cols-3 gap-6 mt-6 pt-4">
               <div className="col-span-3 flex flex-col gap-2">
-                <label className="block font-semibold text-gray-700 text-sm mb-1">Invoice Details</label>
+                <label className="block font-semibold text-gray-700 text-sm mb-1">
+                  Invoice Details
+                </label>
                 <textarea
                   placeholder="Invoice Details"
+                  value={formData.invoiceDetails || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, invoiceDetails: e.target.value })
+                  }
                   className="w-full border border-gray-300 px-3 py-2 text-sm rounded-md"
                 />
               </div>
@@ -278,62 +463,127 @@ const AddProduct = () => {
           </div>
         )}
 
+
         {/* WEB TAB */}
         {activeTab === "web" && (
           <div>
             <div className="grid grid-cols-2 gap-6 mb-8">
+              {/* Unit */}
               <div className="flex items-center">
                 <label className="w-20 font-semibold text-gray-700 text-sm">Unit</label>
-                <select className="border border-gray-300 rounded-md px-3 py-2 w-[120px] text-sm select" defaultValue="">
+                <select
+                  value={formData.unit}
+                  onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                  className="border border-gray-300 rounded-md px-3 py-2 w-[120px] text-sm select"
+                >
                   <option value="" disabled>Select Unit</option>
                   {commonProductUnits.map((unit, idx) => (
-                    <option className="text-black" key={idx} value={unit}>{unit}</option>
+                    <option className="text-black" key={idx} value={unit}>
+                      {unit}
+                    </option>
                   ))}
                 </select>
               </div>
+
+              {/* Brand */}
               <div className="flex items-center">
                 <label className="w-20 font-semibold text-gray-700 text-sm">Brand</label>
-                <select className="border border-gray-300 rounded-md px-3 py-2 w-[120px] text-sm select" defaultValue="">
+                <select
+                  value={formData.brand}
+                  onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                  className="border border-gray-300 rounded-md px-3 py-2 w-[120px] text-sm select"
+                >
                   <option value="" disabled>Select Brand</option>
                   {popularBrands.map((brand, idx) => (
-                    <option className="text-black" key={idx} value={brand}>{brand}</option>
+                    <option className="text-black" key={idx} value={brand}>
+                      {brand}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
+
             <div className="grid grid-cols-2 gap-6 mb-8 items-center">
+              {/* Type */}
               <div className="flex items-center gap-[50px]">
                 <div className="block font-semibold text-gray-700 text-sm mb-1">Type</div>
-                <input type="text" placeholder="Type" className="w-[400px] border rounded border-gray-300 px-3 py-2 text-sm" />
+                <input
+                  type="text"
+                  placeholder="Type"
+                  value={formData.type}
+                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                  className="w-[400px] border rounded border-gray-300 px-3 py-2 text-sm"
+                />
               </div>
+
+              {/* Tag */}
               <div className="flex items-center gap-[60px]">
                 <div className="block font-semibold text-gray-700 text-sm mb-1">Tag</div>
-                <input type="text" placeholder="Tag" className="w-[400px] rounded border border-gray-300 px-3 py-2 text-sm" />
+                <input
+                  type="text"
+                  placeholder="Tag"
+                  value={formData.tag}
+                  onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
+                  className="w-[400px] rounded border border-gray-300 px-3 py-2 text-sm"
+                />
               </div>
+
+              {/* Best Sale */}
               <div className="flex items-center">
                 <label className="w-20 font-semibold text-gray-700 text-sm">Best Sale</label>
-                <select className="border border-gray-300 rounded-md px-2 py-2 w-[120px] text-sm" defaultValue="">
-                  <option value="" disabled>select option</option>
+                <select
+                  value={formData.bestSale}
+                  onChange={(e) => setFormData({ ...formData, bestSale: e.target.value })}
+                  className="border border-gray-300 rounded-md px-2 py-2 w-[120px] text-sm"
+                >
+                  <option value="" disabled>Select option</option>
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
               </div>
             </div>
+
             <div className="grid grid-cols-2 gap-6">
+              {/* Review */}
               <div>
-                <label className="block font-semibold text-gray-700 text-sm mb-1">Review</label>
-                <QuillEditor value={review} onChange={setReview} height="180px" />
+                <label className="block font-semibold text-gray-700 text-sm mb-1">
+                  Review
+                </label>
+                <QuillEditor
+                  value={formData.review}
+                  onChange={(value) => setFormData({ ...formData, review: value })}
+                  height="180px"
+                />
               </div>
+
+              {/* Description */}
               <div>
-                <label className="block font-semibold text-gray-700 text-sm mb-1">Description</label>
-                <QuillEditor value={description} onChange={setDescription} height="180px" />
+                <label className="block font-semibold text-gray-700 text-sm mb-1">
+                  Description
+                </label>
+                <QuillEditor
+                  value={formData.description}
+                  onChange={(value) => setFormData({ ...formData, description: value })}
+                  height="180px"
+                />
               </div>
+
+              {/* Specifications */}
               <div className="col-span-2">
-                <label className="block font-semibold text-gray-700 text-sm mb-1">Specifications</label>
-                <QuillEditor value={specifications} onChange={setSpecifications} height="220px" />
+                <label className="block font-semibold text-gray-700 text-sm mb-1">
+                  Specifications
+                </label>
+                <QuillEditor
+                  value={formData.specifications}
+                  onChange={(value) =>
+                    setFormData({ ...formData, specifications: value })
+                  }
+                  height="220px"
+                />
               </div>
             </div>
           </div>
+
         )}
 
         {/* PRICE TAB */}
@@ -393,15 +643,132 @@ const AddProduct = () => {
                 <option value="blue">Blue</option>
               </select>
             </div>
-            <div className="flex items-center mt-4">
-              <fieldset className="flex items-center ml-4 gap-2">
-                <input type="checkbox" className="checkbox h-4 w-4 text-blue-600" checked={showDiv} onChange={() => setShowDiv(!showDiv)} />
-                <span className="text-gray-700 w-full truncate whitespace-nowrap overflow-hidden">Set Variant Wise Price</span>
+
+
+            <div className="items-center mt-4 ml-[300px]">
+              <fieldset className="flex items-center ml-4 gap-2">        
               </fieldset>
-              <div className={`ml-8 mt-3 p-4 border border-gray-300 rounded bg-gray-50 transition-all duration-300 w-[400px] ${showDiv ? "block opacity-100" : "opacity-0 h-0 overflow-hidden"}`}>
-                <p className="text-gray-800"></p>
-              </div>
+              {
+                 <div className="ml-8">
+      {/* Checkbox to toggle variants */}
+      <label className="flex items-center space-x-2 mb-2">
+        <input
+          type="checkbox"
+          checked={showVariants}
+          onChange={(e) => {
+            setShowVariants(e.target.checked);
+            if (e.target.checked && variants.length === 0) {
+              // First row add only when checked
+              setVariants([{ size: "", color: "", price: "" }]);
+            } else if (!e.target.checked) {
+              setVariants([]); // clear if unchecked
+            }
+          }}
+        />
+        <span className="text-gray-700 font-medium text-sm">
+          Set Variant Wise Price
+        </span>
+      </label>
+
+      {/* Variants Table */}
+      <div
+        style={{ transform: showVariants ? "scaleX(1)" : "scaleX(0)" }}
+        className={`mt-3 p-4 border border-gray-300 rounded bg-gray-50 
+          transition-transform duration-700 origin-left w-[500px] 
+          ${showVariants ? "opacity-100" : "opacity-0 h-0 overflow-hidden"}`}
+      >
+        <table className="w-full text-sm text-left border border-collapse">
+          <thead>
+            <tr className="bg-white border-b text-gray-700 font-medium">
+              <th className="px-2 py-2 border text-red-600">
+                Size<span className="text-red-600">*</span>
+              </th>
+              <th className="px-2 py-2 border text-red-600">
+                Color<span className="text-red-600">*</span>
+              </th>
+              <th className="px-2 py-2 border text-red-600">
+                Price<span className="text-red-600">*</span>
+              </th>
+              <th className="px-2 py-2 border text-blue-600">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {variants.map((variant, index) => (
+              <tr key={index}>
+                {/* Size */}
+                <td className="px-2 py-1 border">
+                  <select
+                    value={variant.size}
+                    onChange={(e) =>
+                      handleChanges(index, "size", e.target.value)
+                    }
+                    className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                  >
+                    <option value="">Select option</option>
+                    <option>Small</option>
+                    <option>Medium</option>
+                    <option>Large</option>
+                  </select>
+                </td>
+
+                {/* Color */}
+                <td className="px-2 py-1 border">
+                  <select
+                    value={variant.color}
+                    onChange={(e) =>
+                      handleChanges(index, "color", e.target.value)
+                    }
+                    className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                  >
+                    <option value="">Select option</option>
+                    <option>Red</option>
+                    <option>Blue</option>
+                    <option>Green</option>
+                  </select>
+                </td>
+
+                {/* Price */}
+                <td className="px-2 py-1 border">
+                  <input
+                    type="number"
+                    value={variant.price}
+                    onChange={(e) =>
+                      handleChanges(index, "price", e.target.value)
+                    }
+                    className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                    placeholder="0.00"
+                  />
+                </td>
+
+                {/* Action */}
+                <td className="px-2 py-1 border text-center">
+                  {index === 0 ? (
+                    <button
+                      onClick={handleAdd}
+                      className="bg-sky-400 hover:bg-sky-500 text-white text-sm font-semibold px-3 py-1 rounded"
+                    >
+                      Add
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleRemove(index)}
+                      className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+              }
             </div>
+
+
             <div className="flex items-center mt-4 mb-8">
               <label className="w-40 text-right text-sm font-semibold text-gray-700">Video Link <span className="text-red-500">*</span></label>
               <input type="url" className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted" />
@@ -442,7 +809,81 @@ const AddProduct = () => {
         )}
 
         {/* TRANSLATION TAB */}
-        {activeTab === "translation" && <div></div>}
+        {activeTab === "translation" &&
+
+
+          <div className="space-y-6">
+            {blocks.map((block, index) => (
+              <div key={block.id} className="border p-4 rounded-md space-y-4 relative">
+                {/* Language selector + add/remove */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 gap-2">
+                  <label className="font-semibold text-gray-700 text-sm">Language</label>
+                  <select
+                    className="border border-gray-300 rounded px-3 py-2 w-full sm:w-64 text-sm"
+                    value={block.language}
+                    onChange={(e) => handleChange(block.id, "language", e.target.value)}
+                  >
+                    <option value="" disabled>Select language</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                  </select>
+
+                  {/* First block gets + button, rest get - button */}
+                  {index === 0 ? (
+                    <button
+                      type="button"
+                      onClick={addBlock}
+                      className="ml-2 text-green-600 font-bold text-xl"
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => removeBlock(block.id)}
+                      className="ml-2 text-red-600 font-bold text-xl"
+                    >
+                      −
+                    </button>
+                  )}
+                </div>
+
+                {/* Full-width Details Editor */}
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">Details</label>
+                  <QuillEditor
+                    value={block.details}
+                    onChange={(value) => handleChange(block.id, "details", value)}
+                    height="200px"
+                  />
+                </div>
+
+                {/* Side-by-side Editors */}
+                <div className="flex flex-col gap-6 md:flex-row">
+                  <div className="w-full md:flex-1">
+                    <label className="block font-semibold text-gray-700 text-sm mb-1">Description</label>
+                    <QuillEditor
+                      value={block.description}
+                      onChange={(value) => handleChange(block.id, "description", value)}
+                      height="180px"
+                    />
+                  </div>
+                  <div className="w-full md:flex-1">
+                    <label className="block font-semibold text-gray-700 text-sm mb-1">Specifications</label>
+                    <QuillEditor
+                      value={block.specifications}
+                      onChange={(value) => handleChange(block.id, "specifications", value)}
+                      height="180px"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+
+        }
 
         {/* Navigation */}
         <div className="flex justify-between items-center mt-6">
@@ -453,6 +894,8 @@ const AddProduct = () => {
           <div className="space-x-2">
             <button type="button" onClick={goNext} disabled={isLastTab} className={`px-4 py-2 border rounded-md ${isLastTab ? "text-gray-400 cursor-not-allowed" : "text-green-600"}`}>Next</button>
             <button type="button" onClick={goLast} disabled={isLastTab} className={`px-4 py-2 border rounded-md ${isLastTab ? "text-gray-400 cursor-not-allowed" : "text-green-600"}`}>Last</button>
+            {isLastTab && <button onClick={handleSubmit} className="px-4 py-2 border rounded-md bg-green-600 text-white">Submit</button>}
+
           </div>
         </div>
       </div>
