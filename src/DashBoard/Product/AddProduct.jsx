@@ -197,11 +197,11 @@ const AddProduct = () => {
     setBlocks((prev) => prev.filter((b) => b.id !== id));
   };
 
-  const handleChange = (id, field, value) => {
-    setBlocks((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, [field]: value } : b))
-    );
-  };
+  // const handleChange = (id, field, value) => {
+  //   setBlocks((prev) =>
+  //     prev.map((b) => (b.id === id ? { ...b, [field]: value } : b))
+  //   );
+  // };
 
 
 
@@ -222,6 +222,10 @@ const AddProduct = () => {
     const updated = [...variants];
     updated[index][field] = value;
     setVariants(updated);
+  };
+
+    const handleFormChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
   };
 
 
@@ -252,6 +256,23 @@ const AddProduct = () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const [formData, setFormData] = useState({
     itemInfo: "",
     category: "",
@@ -268,7 +289,16 @@ const AddProduct = () => {
     bestSale: "",
     review: "",
     description: "",
-    specifications: ""
+    specifications: "",
+    sellPrice: "",
+    supplierPrice: "",
+    offer: "",
+    itemCode: "",
+    supplier: "",
+    varient: "",
+    defaultVarient: "",
+    color: "",
+    videoLink: ""
   });
 
 
@@ -588,192 +618,240 @@ const AddProduct = () => {
 
         {/* PRICE TAB */}
         {activeTab === "price" && (
-          <div className="flex justify-center items-center md:flex-col md:items-center md:justify-center lg:flex-col lg:justify-center lg:items-center lg:mr-[200px]">
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Sell Price <span className="text-red-500">*</span></label>
-              <input type="number" placeholder="Sell Price" className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted" />
-            </div>
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Supplier Price <span className="text-red-500">*</span></label>
-              <input type="number" placeholder="0" className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted" />
-            </div>
-            <div className="mt-4 flex items-center mr-[230px]">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Offer <span className="text-red-500">*</span></label>
-              <select defaultValue="" className="ml-4 flex-1 w-[70px] border border-gray-400 rounded px-2 py-1 text-center focus:outline-none focus:border-dotted">
-                <option value="">--</option>
-                <option className="text-black" value="Yes">Yes</option>
-                <option className="text-black" value="No">No</option>
-              </select>
-            </div>
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Item Code <span className="text-red-500">*</span></label>
-              <input type="text" placeholder="Item Code" className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted" />
-            </div>
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Supplier <span className="text-red-500">*</span></label>
-              <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted">
-                <option value="">--</option>
-                {supplierName.map((supplier, idx) => (
-                  <option key={idx} value={supplier}>{supplier}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Varient <span className="text-red-500">*</span></label>
-              <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted appearance-none">
-                <option value="">--</option>
-                <option value="small">Small</option>
-                <option value="Lerge">Lerge</option>
-                <option value="Medium">Medium</option>
-                <option value="Extra Lerge">Extra Lerge</option>
-              </select>
-            </div>
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Default Varient <span className="text-red-500">*</span></label>
-              <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted appearance-none">
-                <option value="">--</option>
-              </select>
-            </div>
-            <div className="flex items-center mt-4">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Color</label>
-              <select className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-left focus:outline-none appearance-none" defaultValue="">
-                <option value="" disabled hidden></option>
-                <option value="red">Red</option>
-                <option value="green">Green</option>
-                <option value="blue">Blue</option>
-              </select>
-            </div>
-
-
-            <div className="items-center mt-4 ml-[300px]">
-              <fieldset className="flex items-center ml-4 gap-2">        
-              </fieldset>
-              {
-                 <div className="ml-8">
-      {/* Checkbox to toggle variants */}
-      <label className="flex items-center space-x-2 mb-2">
+        <div className="flex justify-center items-center md:flex-col md:items-center md:justify-center lg:flex-col lg:justify-center lg:items-center lg:mr-[200px]">
+      {/* Sell Price */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Sell Price <span className="text-red-500">*</span>
+        </label>
         <input
-          type="checkbox"
-          checked={showVariants}
-          onChange={(e) => {
-            setShowVariants(e.target.checked);
-            if (e.target.checked && variants.length === 0) {
-              // First row add only when checked
-              setVariants([{ size: "", color: "", price: "" }]);
-            } else if (!e.target.checked) {
-              setVariants([]); // clear if unchecked
-            }
-          }}
+          type="number"
+          placeholder="Sell Price"
+          value={formData.sellPrice}
+          onChange={(e) => handleFormChange("sellPrice", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted"
         />
-        <span className="text-gray-700 font-medium text-sm">
-          Set Variant Wise Price
-        </span>
-      </label>
+      </div>
+
+      {/* Supplier Price */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Supplier Price <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="number"
+          placeholder="0"
+          value={formData.supplierPrice}
+          onChange={(e) => handleFormChange("supplierPrice", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted"
+        />
+      </div>
+
+      {/* Offer */}
+      <div className="mt-4 flex items-center mr-[230px]">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Offer <span className="text-red-500">*</span>
+        </label>
+        <select
+          value={formData.offer}
+          onChange={(e) => handleFormChange("offer", e.target.value)}
+          className="ml-4 flex-1 w-[70px] border border-gray-400 rounded px-2 py-1 text-center focus:outline-none focus:border-dotted"
+        >
+          <option value="">--</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      {/* Item Code */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Item Code <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          placeholder="Item Code"
+          value={formData.itemCode}
+          onChange={(e) => handleFormChange("itemCode", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted"
+        />
+      </div>
+
+      {/* Supplier */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Supplier <span className="text-red-500">*</span>
+        </label>
+        <select
+          value={formData.supplier}
+          onChange={(e) => handleFormChange("supplier", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted"
+        >
+          <option value="">--</option>
+          {supplierName.map((supplier, idx) => (
+            <option key={idx} value={supplier}>{supplier}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Varient */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Varient <span className="text-red-500">*</span>
+        </label>
+        <select
+          value={formData.varient}
+          onChange={(e) => handleFormChange("varient", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted appearance-none"
+        >
+          <option value="">--</option>
+          <option value="small">Small</option>
+          <option value="Lerge">Lerge</option>
+          <option value="Medium">Medium</option>
+          <option value="Extra Lerge">Extra Lerge</option>
+        </select>
+      </div>
+
+      {/* Default Varient */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Default Varient <span className="text-red-500">*</span>
+        </label>
+        <select
+          value={formData.defaultVarient}
+          onChange={(e) => handleFormChange("defaultVarient", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted appearance-none"
+        >
+          <option value="">--</option>
+        </select>
+      </div>
+
+      {/* Color */}
+      <div className="flex items-center mt-4">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Color
+        </label>
+        <select
+          value={formData.color}
+          onChange={(e) => handleFormChange("color", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-left focus:outline-none appearance-none"
+        >
+          <option value="" disabled hidden></option>
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+        </select>
+      </div>
 
       {/* Variants Table */}
-      <div
-        style={{ transform: showVariants ? "scaleX(1)" : "scaleX(0)" }}
-        className={`mt-3 p-4 border border-gray-300 rounded bg-gray-50 
-          transition-transform duration-700 origin-left w-[500px] 
-          ${showVariants ? "opacity-100" : "opacity-0 h-0 overflow-hidden"}`}
-      >
-        <table className="w-full text-sm text-left border border-collapse">
-          <thead>
-            <tr className="bg-white border-b text-gray-700 font-medium">
-              <th className="px-2 py-2 border text-red-600">
-                Size<span className="text-red-600">*</span>
-              </th>
-              <th className="px-2 py-2 border text-red-600">
-                Color<span className="text-red-600">*</span>
-              </th>
-              <th className="px-2 py-2 border text-red-600">
-                Price<span className="text-red-600">*</span>
-              </th>
-              <th className="px-2 py-2 border text-blue-600">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {variants.map((variant, index) => (
-              <tr key={index}>
-                {/* Size */}
-                <td className="px-2 py-1 border">
-                  <select
-                    value={variant.size}
-                    onChange={(e) =>
-                      handleChanges(index, "size", e.target.value)
-                    }
-                    className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
-                  >
-                    <option value="">Select option</option>
-                    <option>Small</option>
-                    <option>Medium</option>
-                    <option>Large</option>
-                  </select>
-                </td>
+      <div className="items-center mt-4 ml-[300px]">
+        <label className="flex items-center space-x-2 mb-2">
+          <input
+            type="checkbox"
+            checked={showVariants}
+            onChange={(e) => {
+              setShowVariants(e.target.checked);
+              if (e.target.checked && variants.length === 0) {
+                setVariants([{ size: "", color: "", price: "" }]);
+              } else if (!e.target.checked) {
+                setVariants([]);
+              }
+            }}
+          />
+          <span className="text-gray-700 font-medium text-sm">
+            Set Variant Wise Price
+          </span>
+        </label>
 
-                {/* Color */}
-                <td className="px-2 py-1 border">
-                  <select
-                    value={variant.color}
-                    onChange={(e) =>
-                      handleChanges(index, "color", e.target.value)
-                    }
-                    className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
-                  >
-                    <option value="">Select option</option>
-                    <option>Red</option>
-                    <option>Blue</option>
-                    <option>Green</option>
-                  </select>
-                </td>
-
-                {/* Price */}
-                <td className="px-2 py-1 border">
-                  <input
-                    type="number"
-                    value={variant.price}
-                    onChange={(e) =>
-                      handleChanges(index, "price", e.target.value)
-                    }
-                    className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
-                    placeholder="0.00"
-                  />
-                </td>
-
-                {/* Action */}
-                <td className="px-2 py-1 border text-center">
-                  {index === 0 ? (
-                    <button
-                      onClick={handleAdd}
-                      className="bg-sky-400 hover:bg-sky-500 text-white text-sm font-semibold px-3 py-1 rounded"
-                    >
-                      Add
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleRemove(index)}
-                      className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded"
-                    >
-                      Remove
-                    </button>
-                  )}
-                </td>
+        <div
+          style={{ transform: showVariants ? "scaleX(1)" : "scaleX(0)" }}
+          className={`mt-3 p-4 border border-gray-300 rounded bg-gray-50 
+            transition-transform duration-700 origin-left w-[500px] 
+            ${showVariants ? "opacity-100" : "opacity-0 h-0 overflow-hidden"}`}
+        >
+          <table className="w-full text-sm text-left border border-collapse">
+            <thead>
+              <tr className="bg-white border-b text-gray-700 font-medium">
+                <th className="px-2 py-2 border text-red-600">Size<span className="text-red-600">*</span></th>
+                <th className="px-2 py-2 border text-red-600">Color<span className="text-red-600">*</span></th>
+                <th className="px-2 py-2 border text-red-600">Price<span className="text-red-600">*</span></th>
+                <th className="px-2 py-2 border text-blue-600">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {variants.map((variant, index) => (
+                <tr key={index}>
+                  <td className="px-2 py-1 border">
+                    <select
+                      value={variant.size}
+                      onChange={(e) => handleChanges(index, "size", e.target.value)}
+                      className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                    >
+                      <option value="">Select option</option>
+                      <option>Small</option>
+                      <option>Medium</option>
+                      <option>Large</option>
+                    </select>
+                  </td>
+                  <td className="px-2 py-1 border">
+                    <select
+                      value={variant.color}
+                      onChange={(e) => handleChanges(index, "color", e.target.value)}
+                      className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                    >
+                      <option value="">Select option</option>
+                      <option>Red</option>
+                      <option>Blue</option>
+                      <option>Green</option>
+                    </select>
+                  </td>
+                  <td className="px-2 py-1 border">
+                    <input
+                      type="number"
+                      value={variant.price}
+                      onChange={(e) => handleChanges(index, "price", e.target.value)}
+                      className="w-full border border-gray-300 px-2 py-1 rounded text-sm"
+                      placeholder="0.00"
+                    />
+                  </td>
+                  <td className="px-2 py-1 border text-center">
+                    {index === 0 ? (
+                      <button
+                        onClick={handleAdd}
+                        className="bg-sky-400 hover:bg-sky-500 text-white text-sm font-semibold px-3 py-1 rounded"
+                      >
+                        Add
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleRemove(index)}
+                        className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Video Link */}
+      <div className="flex items-center mt-4 mb-8">
+        <label className="w-40 text-right text-sm font-semibold text-gray-700">
+          Video Link <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="url"
+          value={formData.videoLink}
+          onChange={(e) => handleFormChange("videoLink", e.target.value)}
+          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted"
+        />
       </div>
     </div>
-
-              }
-            </div>
-
-
-            <div className="flex items-center mt-4 mb-8">
-              <label className="w-40 text-right text-sm font-semibold text-gray-700">Video Link <span className="text-red-500">*</span></label>
-              <input type="url" className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted" />
-            </div>
-          </div>
+          
         )}
 
         {/* IMAGE TAB */}
