@@ -1,41 +1,3 @@
- <div className="space-y-6">
-            <div>
-              <div className="flex gap-4 items-center">
-                <label className=" font-semibold mb-1 text-right text-gray-700">Default image</label>
-                <input type="file" className="block file-input text-sm text-gray-900 border" onChange={handleDefaultUpload} />
-              </div>
-              {uploadedUrls.default && (
-                <p className="text-sm text-gray-600 mt-1">
-                  Uploaded: <a href={uploadedUrls.default} className="text-blue-500 underline" target="_blank" rel="noreferrer">
-                    <img className="" src={uploadedUrls.default} alt="" />
-                  </a>
-                </p>
-              )}
-            </div>
-            <div className="mb-4">
-              <div className="flex flex-col gap-4 mx-8">
-                {images.map((_, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <label className="w-16 font-medium">Image {index + 1}</label>
-                    <input type="file" className="file-input text-sm text-gray-900" onChange={(e) => handleDynamicUpload(e, index)} />
-                    <button type="button" className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded" onClick={addImageInput}>+</button>
-                    <button type="button" className={`bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded ${images.length === 1 ? "opacity-50 cursor-not-allowed" : ""}`} onClick={() => removeImageInput(index)} disabled={images.length === 1}>−</button>
-                    {uploadedUrls[index] && <img src={uploadedUrls[index]} alt={`Uploaded ${index}`} className="h-16 w-16 object-cover rounded" />}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-
-
-
   const [formData, setFormData] = useState({
     itemInfo: "",
     category: "",
@@ -61,5 +23,82 @@
     varient: "",
     defaultVarient: "",
     color: "",
-    videoLink: ""
+    videoLink: "",
+    defaultImage: "",   // Default image
+    images: [""]        // Dynamic images
   });
+
+
+
+
+
+
+    <div className="space-y-6">
+            {blocks.map((block, index) => (
+              <div key={block.id} className="border p-4 rounded-md space-y-4 relative">
+                {/* Language selector + add/remove */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 gap-2">
+                  <label className="font-semibold text-gray-700 text-sm">Language</label>
+                  <select
+                    className="border border-gray-300 rounded px-3 py-2 w-full sm:w-64 text-sm"
+                    value={block.language}
+                    onChange={(e) => handleChange(block.id, "language", e.target.value)}
+                  >
+                    <option value="" disabled>Select language</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                  </select>
+
+                  {/* First block gets + button, rest get - button */}
+                  {index === 0 ? (
+                    <button
+                      type="button"
+                      onClick={addBlock}
+                      className="ml-2 text-green-600 font-bold text-xl"
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => removeBlock(block.id)}
+                      className="ml-2 text-red-600 font-bold text-xl"
+                    >
+                      −
+                    </button>
+                  )}
+                </div>
+
+                {/* Full-width Details Editor */}
+                <div>
+                  <label className="block font-semibold text-gray-700 text-sm mb-1">Details</label>
+                  <QuillEditor
+                    value={block.details}
+                    onChange={(value) => handleChange(block.id, "details", value)}
+                    height="200px"
+                  />
+                </div>
+
+                {/* Side-by-side Editors */}
+                <div className="flex flex-col gap-6 md:flex-row">
+                  <div className="w-full md:flex-1">
+                    <label className="block font-semibold text-gray-700 text-sm mb-1">Description</label>
+                    <QuillEditor
+                      value={block.description}
+                      onChange={(value) => handleChange(block.id, "description", value)}
+                      height="180px"
+                    />
+                  </div>
+                  <div className="w-full md:flex-1">
+                    <label className="block font-semibold text-gray-700 text-sm mb-1">Specifications</label>
+                    <QuillEditor
+                      value={block.specifications}
+                      onChange={(value) => handleChange(block.id, "specifications", value)}
+                      height="180px"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
