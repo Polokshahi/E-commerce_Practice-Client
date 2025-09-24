@@ -81,183 +81,40 @@ const productCategories = ["Electronics", "Clothing", "Home & Kitchen", "Beauty 
 
 // Main Component
 const AddProduct = () => {
-  const tabs = ["item", "web", "price", "image", "translation"];
-  const [activeTab, setActiveTab] = useState("item");
-  const [errors, setErrors] = useState({});
-  const [showDiv, setShowDiv] = useState(false);
-  // const [formData, setFormData] = useState({ itemInfo: "", category: "" });
-  // const [details, setDetails] = useState("");
-  // const [review, setReview] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [specifications, setSpecifications] = useState("");
-  // const [invoice, setInvoice] = useState({
-  //   invoiceNo: "",
-  //   invoiceDate: "",
-  //   totalAmount: "",
-  // });
+const tabs = ["item", "web", "price", "image", "translation"];
+const [activeTab, setActiveTab] = useState("item");
+const [errors, setErrors] = useState({});
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.itemInfo.trim()) newErrors.itemInfo = "This field is required.";
-    if (!formData.category.trim()) newErrors.category = "This field is required.";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+const validate = () => {
+  const newErrors = {};
+  if (!formData.itemInfo.trim()) newErrors.itemInfo = "This field is required.";
+  if (!formData.category.trim()) newErrors.category = "This field is required.";
+ 
 
-  const goNext = () => {
-    const currentIndex = tabs.indexOf(activeTab);
-    if (activeTab === "item" && !validate()) return;
-    if (currentIndex < tabs.length - 1) setActiveTab(tabs[currentIndex + 1]);
-  };
-
-  const goPrev = () => {
-    const currentIndex = tabs.indexOf(activeTab);
-    if (currentIndex > 0) setActiveTab(tabs[currentIndex - 1]);
-  };
-
-  const goFirst = () => setActiveTab(tabs[0]);
-  const goLast = () => setActiveTab(tabs[tabs.length - 1]);
-  const isFirstTab = activeTab === tabs[0];
-  const isLastTab = activeTab === tabs[tabs.length - 1];
-
-  // Cloudinary image upload
-  const [images, setImages] = useState([null]);
-  const [uploadedUrls, setUploadedUrls] = useState({});
-  const cloudName = "dhposuwdg";
-  const uploadPreset = "Ecommerce";
-
-  const handleDefaultUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", uploadPreset);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.secure_url) setUploadedUrls((prev) => ({ ...prev, default: data.secure_url }));
-    } catch (err) {
-      console.error("Cloudinary upload error (default):", err);
-    }
-  };
-
-  const handleDynamicUpload = async (e, index) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", uploadPreset);
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.secure_url) setUploadedUrls((prev) => ({ ...prev, [index]: data.secure_url }));
-    } catch (err) {
-      console.error(`Cloudinary upload error (image ${index}):`, err);
-    }
-  };
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
 
 
 
 
 
+const validatePriceFields = () => {
+  const newErrors = {};
 
-
-
-  const addImageInput = () => setImages((prev) => [...prev, null]);
-  const removeImageInput = (index) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-    setUploadedUrls((prev) => {
-      const updated = { ...prev };
-      delete updated[index];
-      return updated;
-    });
-  };
-
-
-
-
-  const [blocks, setBlocks] = useState([
-    { id: Date.now(), language: "", details: "", description: "", specifications: "" },
-  ]);
-
-  const addBlock = () => {
-    setBlocks((prev) => [
-      ...prev,
-      { id: Date.now(), language: "", details: "", description: "", specifications: "" },
-    ]);
-  };
-
-  const removeBlock = (id) => {
-    setBlocks((prev) => prev.filter((b) => b.id !== id));
-  };
-
-  const handleChange = (id, field, value) => {
-    setBlocks((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, [field]: value } : b))
-    );
-  };
-
-
-
- const [variants, setVariants] = useState([]);
-  const [showVariants, setShowVariants] = useState(false);
-
-  const handleAdd = () => {
-    setVariants([...variants, { size: "", color: "", price: "" }]);
-  };
-
-  const handleRemove = (index) => {
-    const updated = [...variants];
-    updated.splice(index, 1);
-    setVariants(updated);
-  };
-
-  const handleChanges = (index, field, value) => {
-    const updated = [...variants];
-    updated[index][field] = value;
-    setVariants(updated);
-  };
-
-    const handleFormChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    console.log("Submitted");
+  if (!formData.sellPrice || formData.sellPrice.toString().trim() === "") {
+    newErrors.sellPrice = "Sell Price is required";
+  }
+  if (!formData.supplierPrice || formData.supplierPrice.toString().trim() === "") {
+    newErrors.supplierPrice = "Supplier Price is required";
+  }
+  if (!formData.itemCode || formData.itemCode.trim() === "") {
+    newErrors.itemCode = "Item Code is required";
   }
 
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
 
 
 
@@ -271,45 +128,175 @@ const AddProduct = () => {
 
 
 
+const goNext = () => {
+  const currentIndex = tabs.indexOf(activeTab);
 
+  // Item tab validation
+  if (activeTab === "item" && !validate()) return;
 
+  // Price tab validation
+  if (activeTab === "price") {
+    if (!validatePriceFields()) return; // stop next if errors exist
+  }
 
+  if (currentIndex < tabs.length - 1) {
+    setActiveTab(tabs[currentIndex + 1]);
+  }
+};
 
+const goPrev = () => {
+  const currentIndex = tabs.indexOf(activeTab);
+  if (currentIndex > 0) setActiveTab(tabs[currentIndex - 1]);
+};
 
+const goFirst = () => setActiveTab(tabs[0]);
+const goLast = () => setActiveTab(tabs[tabs.length - 1]);
+const isFirstTab = activeTab === tabs[0];
+const isLastTab = activeTab === tabs[tabs.length - 1];
 
-  const [formData, setFormData] = useState({
-    itemInfo: "",
-    category: "",
-    filterType: "",
-    warrantee: "",
-    filterNames: "",
-    barCode: "",
-    invoiceDetails: "",
-    details: "",
-    unit: "",
-    brand: "",
-    type: "",
-    tag: "",
-    bestSale: "",
-    review: "",
-    description: "",
-    specifications: "",
-    sellPrice: "",
-    supplierPrice: "",
-    offer: "",
-    itemCode: "",
-    supplier: "",
-    varient: "",
-    defaultVarient: "",
-    color: "",
-    videoLink: "",
-    defaultImage: "",   // Default image
-    images: [""]        // Dynamic images
+// Cloudinary image upload
+const [images, setImages] = useState([null]);
+const [uploadedUrls, setUploadedUrls] = useState({});
+const cloudName = "dhposuwdg";
+const uploadPreset = "Ecommerce";
+
+const handleDefaultUpload = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.secure_url) setUploadedUrls((prev) => ({ ...prev, default: data.secure_url }));
+  } catch (err) {
+    console.error("Cloudinary upload error (default):", err);
+  }
+};
+
+const handleDynamicUpload = async (e, index) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.secure_url) setUploadedUrls((prev) => ({ ...prev, [index]: data.secure_url }));
+  } catch (err) {
+    console.error(`Cloudinary upload error (image ${index}):`, err);
+  }
+};
+
+const addImageInput = () => setImages((prev) => [...prev, null]);
+const removeImageInput = (index) => {
+  setImages((prev) => prev.filter((_, i) => i !== index));
+  setUploadedUrls((prev) => {
+    const updated = { ...prev };
+    delete updated[index];
+    return updated;
   });
+};
+
+const [blocks, setBlocks] = useState([
+  { id: Date.now(), language: "", details: "", description: "", specifications: "" },
+]);
+
+const addBlock = () => {
+  setBlocks((prev) => [
+    ...prev,
+    { id: Date.now(), language: "", details: "", description: "", specifications: "" },
+  ]);
+};
+
+const removeBlock = (id) => {
+  setBlocks((prev) => prev.filter((b) => b.id !== id));
+};
+
+const [variants, setVariants] = useState([]);
+const [showVariants, setShowVariants] = useState(false);
+
+const handleAdd = () => {
+  setVariants([...variants, { size: "", color: "", price: "" }]);
+};
+
+const handleRemove = (index) => {
+  const updated = [...variants];
+  updated.splice(index, 1);
+  setVariants(updated);
+};
+
+const handleChanges = (index, field, value) => {
+  const updated = [...variants];
+  updated[index][field] = value;
+  setVariants(updated);
+};
+
+const handleFormChange = (field, value) => {
+  setFormData({ ...formData, [field]: value });
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  console.log("Submitted");
+};
+
+const handleBlockChange = (id, field, value) => {
+  setFormData((prev) => ({
+    ...prev,
+    blocks: prev.blocks.map((b) =>
+      b.id === id ? { ...b, [field]: value } : b
+    ),
+  }));
+};
+
+const [formData, setFormData] = useState({
+  itemInfo: "",
+  category: "",
+  filterType: "",
+  warrantee: "",
+  filterNames: "",
+  barCode: "",
+  invoiceDetails: "",
+  details: "",
+  unit: "",
+  brand: "",
+  type: "",
+  tag: "",
+  bestSale: "",
+  review: "",
+  description: "",
+  specifications: "",
+  sellPrice: "",
+  supplierPrice: "",
+  offer: "",
+  itemCode: "",
+  supplier: "",
+  varient: "",
+  defaultVarient: "",
+  color: "",
+  videoLink: "",
+  defaultImage: "", // Default image
+  images: [""], // Dynamic images
+  blocks: [
+    { id: Date.now(), language: "", details: "", description: "", specifications: "" },
+  ],
+});
+
+console.log(formData);
 
 
+// const [requiredFields, setRequiredFields] = useState(false);
 
-  console.log(formData);
+
 
 
   return (
@@ -613,37 +600,61 @@ const AddProduct = () => {
         {activeTab === "price" && (
         <div className="flex justify-center items-center md:flex-col md:items-center md:justify-center lg:flex-col lg:justify-center lg:items-center lg:mr-[200px]">
       {/* Sell Price */}
-      <div className="flex items-center mt-4">
-        <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Sell Price <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="number"
-          placeholder="Sell Price"
-          value={formData.sellPrice}
-          onChange={(e) => handleFormChange("sellPrice", e.target.value)}
-          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted"
-        />
-      </div>
+     <div className="flex flex-col mt-4">
+  <div className="flex items-center">
+    <label className="w-40 text-right text-sm font-semibold text-gray-700">
+      Sell Price <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="number"
+      placeholder="Sell Price"
+      value={formData.sellPrice}
+      onChange={(e) => handleFormChange("sellPrice", e.target.value)}
+      className={`ml-4 flex-1 w-[300px] border rounded px-2 py-1 text-right focus:outline-none ${
+        errors.sellPrice ? "border-red-500" : "border-gray-400"
+      }`}
+    />
+  </div>
+  {errors.sellPrice && (
+    <p className="text-red-500 text-xs ml-[160px] mt-1">{errors.sellPrice}</p>
+  )}
+</div>
+
+    
+
+
 
       {/* Supplier Price */}
-      <div className="flex items-center mt-4">
-        <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Supplier Price <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="number"
-          placeholder="0"
-          value={formData.supplierPrice}
-          onChange={(e) => handleFormChange("supplierPrice", e.target.value)}
-          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 text-right focus:outline-none focus:border-dotted"
-        />
-      </div>
+     <div className="flex flex-col mt-4">
+  <div className="flex items-center">
+    <label className="w-40 text-right text-sm font-semibold text-gray-700">
+      Supplier Price <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="number"
+      placeholder="0"
+      value={formData.supplierPrice}
+      onChange={(e) => handleFormChange("supplierPrice", e.target.value)}
+      className={`ml-4 flex-1 w-[300px] border rounded px-2 py-1 text-right focus:outline-none ${
+        errors.supplierPrice ? "border-red-500" : "border-gray-400"
+      }`}
+    />
+  </div>
+  {errors.supplierPrice && (
+    <p className="text-red-500 text-xs ml-[160px] mt-1">{errors.supplierPrice}</p>
+  )}
+</div>
+
+
+      
+    
+
+      
 
       {/* Offer */}
       <div className="mt-4 flex items-center mr-[230px]">
         <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Offer <span className="text-red-500">*</span>
+          Offer 
         </label>
         <select
           value={formData.offer}
@@ -657,23 +668,33 @@ const AddProduct = () => {
       </div>
 
       {/* Item Code */}
-      <div className="flex items-center mt-4">
-        <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Item Code <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Item Code"
-          value={formData.itemCode}
-          onChange={(e) => handleFormChange("itemCode", e.target.value)}
-          className="ml-4 flex-1 w-[300px] border border-gray-400 rounded px-2 py-1 focus:outline-none focus:border-dotted"
-        />
-      </div>
+     <div className="flex flex-col mt-4">
+  <div className="flex items-center">
+    <label className="w-40 text-right text-sm font-semibold text-gray-700">
+      Item Code <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      placeholder="Item Code"
+      value={formData.itemCode}
+      onChange={(e) => handleFormChange("itemCode", e.target.value)}
+      className={`ml-4 flex-1 w-[300px] border rounded px-2 py-1 focus:outline-none ${
+        errors.itemCode ? "border-red-500" : "border-gray-400"
+      }`}
+    />
+  </div>
+  {errors.itemCode && (
+    <p className="text-red-500 text-xs ml-[160px] mt-1">{errors.itemCode}</p>
+  )}
+</div>
+
+    
+
 
       {/* Supplier */}
       <div className="flex items-center mt-4">
         <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Supplier <span className="text-red-500">*</span>
+          Supplier 
         </label>
         <select
           value={formData.supplier}
@@ -690,7 +711,7 @@ const AddProduct = () => {
       {/* Varient */}
       <div className="flex items-center mt-4">
         <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Varient <span className="text-red-500">*</span>
+          Varient 
         </label>
         <select
           value={formData.varient}
@@ -708,7 +729,7 @@ const AddProduct = () => {
       {/* Default Varient */}
       <div className="flex items-center mt-4">
         <label className="w-40 text-right text-sm font-semibold text-gray-700">
-          Default Varient <span className="text-red-500">*</span>
+          Default Varient 
         </label>
         <select
           value={formData.defaultVarient}
@@ -923,75 +944,75 @@ const AddProduct = () => {
         {activeTab === "translation" &&
 
 
-          <div className="space-y-6">
-            {blocks.map((block, index) => (
-              <div key={block.id} className="border p-4 rounded-md space-y-4 relative">
-                {/* Language selector + add/remove */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 gap-2">
-                  <label className="font-semibold text-gray-700 text-sm">Language</label>
-                  <select
-                    className="border border-gray-300 rounded px-3 py-2 w-full sm:w-64 text-sm"
-                    value={block.language}
-                    onChange={(e) => handleChange(block.id, "language", e.target.value)}
-                  >
-                    <option value="" disabled>Select language</option>
-                    <option value="en">English</option>
-                    <option value="fr">French</option>
-                    <option value="es">Spanish</option>
-                  </select>
+         <div className="space-y-6">
+  {formData.blocks.map((block, index) => (
+    <div key={block.id} className="border p-4 rounded-md space-y-4 relative">
 
-                  {/* First block gets + button, rest get - button */}
-                  {index === 0 ? (
-                    <button
-                      type="button"
-                      onClick={addBlock}
-                      className="ml-2 text-green-600 font-bold text-xl"
-                    >
-                      +
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => removeBlock(block.id)}
-                      className="ml-2 text-red-600 font-bold text-xl"
-                    >
-                      −
-                    </button>
-                  )}
-                </div>
+      {/* Language selector + add/remove */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 gap-2">
+        <label className="font-semibold text-gray-700 text-sm">Language</label>
+        <select
+          className="border border-gray-300 rounded px-3 py-2 w-full sm:w-64 text-sm"
+          value={block.language}
+          onChange={(e) => handleBlockChange(block.id, "language", e.target.value)}
+        >
+          <option value="" disabled>Select language</option>
+          <option value="en">English</option>
+          <option value="fr">French</option>
+          <option value="es">Spanish</option>
+        </select>
 
-                {/* Full-width Details Editor */}
-                <div>
-                  <label className="block font-semibold text-gray-700 text-sm mb-1">Details</label>
-                  <QuillEditor
-                    value={block.details}
-                    onChange={(value) => handleChange(block.id, "details", value)}
-                    height="200px"
-                  />
-                </div>
+        {index === 0 ? (
+          <button
+            type="button"
+            onClick={addBlock}
+            className="ml-2 text-green-600 font-bold text-xl"
+          >
+            +
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => removeBlock(block.id)}
+            className="ml-2 text-red-600 font-bold text-xl"
+          >
+            −
+          </button>
+        )}
+      </div>
 
-                {/* Side-by-side Editors */}
-                <div className="flex flex-col gap-6 md:flex-row">
-                  <div className="w-full md:flex-1">
-                    <label className="block font-semibold text-gray-700 text-sm mb-1">Description</label>
-                    <QuillEditor
-                      value={block.description}
-                      onChange={(value) => handleChange(block.id, "description", value)}
-                      height="180px"
-                    />
-                  </div>
-                  <div className="w-full md:flex-1">
-                    <label className="block font-semibold text-gray-700 text-sm mb-1">Specifications</label>
-                    <QuillEditor
-                      value={block.specifications}
-                      onChange={(value) => handleChange(block.id, "specifications", value)}
-                      height="180px"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Full-width Details Editor */}
+      <div>
+        <label className="block font-semibold text-gray-700 text-sm mb-1">Details</label>
+        <QuillEditor
+          value={block.details}
+          onChange={(value) => handleBlockChange(block.id, "details", value)}
+          height="200px"
+        />
+      </div>
+
+      {/* Side-by-side Editors */}
+      <div className="flex flex-col gap-6 md:flex-row">
+        <div className="w-full md:flex-1">
+          <label className="block font-semibold text-gray-700 text-sm mb-1">Description</label>
+          <QuillEditor
+            value={block.description}
+            onChange={(value) => handleBlockChange(block.id, "description", value)}
+            height="180px"
+          />
+        </div>
+        <div className="w-full md:flex-1">
+          <label className="block font-semibold text-gray-700 text-sm mb-1">Specifications</label>
+          <QuillEditor
+            value={block.specifications}
+            onChange={(value) => handleBlockChange(block.id, "specifications", value)}
+            height="180px"
+          />
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
 
         }
